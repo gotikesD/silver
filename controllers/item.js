@@ -23,5 +23,9 @@ module.exports = {
             .catch((err) => {
                 next(new Error(err))
             })
+    } ,
+
+    addNew : (req,res,next) => {
+        res.end('You can do this!')
     }
-}
+};

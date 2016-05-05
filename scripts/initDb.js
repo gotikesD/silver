@@ -11,7 +11,7 @@ mongoose.connect(config.database);
 let errorsCount = 0;
 let totalCount = 0;
 
-fs.createReadStream('./data/initialData.csv')
+fs.createReadStream('../data/initialData.csv')
     .pipe(csv())
     .on('data',(data) => {
         let current = {};
@@ -41,7 +41,6 @@ fs.createReadStream('./data/initialData.csv')
                 })
                .catch(err => {
                        errorsCount++;
-                       console.log(err.errors)
                } )
 
             totalCount++

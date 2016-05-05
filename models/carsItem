@@ -50,8 +50,8 @@ let carItemSchema = new Schema({
     transmissionType : { type : String , enum : ['Automatic','Manual']},
     entryDate : { type : Date},
     cost : {type : Currency , min : 0},
-    dealerId : {type: Number , max: 3 },
-    amount : {type: Number , min : 0}
+    dealerId : {type: Number  },
+    amount : {type: Number , min : 1, default: 1}
 });
 
 carItemSchema.index({stockId: 1}, {unique: true});

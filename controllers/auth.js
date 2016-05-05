@@ -6,10 +6,9 @@ const bcrypt = require('bcryptjs');
 
 
 module.exports = {
+
+
     loginPost : (req,res,next) => {
-
-
-
         User.findOne({email : req.body.email})
             .then((user) => {
                 if(!user) {next(new Error('Not Find'))}
@@ -17,7 +16,6 @@ module.exports = {
                 let compare = bcrypt.compareSync(req.body.password, user.password);
 
                 if(compare) {
-                    user.lastLogin = new Date();
                     user.save()
                         .catch((err)=> { next(err)});
                     let token = jwt.sign(user, 'silverSecret');
@@ -46,5 +44,18 @@ module.exports = {
         user.save()
             .then((user)=> {res.json(user)})
             .catch((err)=> { next(err)})
+    } ,
+
+
+    checkRules : (req,res,next) => {
+       let userId = req.body.userId;
+       User.findOne({_id :userId})
+           .then((data) => {
+               if(data.rules != 'Advanced User') {
+                   next(new Error('Permission denied'))
+               } else {
+                   next()
+               }
+           })
     }
 };
