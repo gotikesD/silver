@@ -13,6 +13,8 @@ router.get('/cars/:id', controller.getSingle);
 // available only  to the landlord
 
 router.post('/new', checkRules , controller.addNew);
+router.delete('/delete', checkRules , controller.deleteCar);
+router.put('/update', checkRules , controller.updateCar);
 
 
 module.exports = router;

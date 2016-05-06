@@ -4,6 +4,7 @@ const app = express();
 const auth = require('./routes/auth');
 const cars = require('./routes/cars');
 const cart = require('./routes/cart');
+const admin = require('./routes/admin');
 const config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', cars);
 app.use('/auth', auth);
 app.use('/cart' , cart);
+app.use('/admin' , admin);
 
 
 if (app.get('env') === 'development') {

@@ -26,6 +26,50 @@ module.exports = {
     } ,
 
     addNew : (req,res,next) => {
-        res.end('You can do this!')
+       let current = Object.assign({}, req.body);
+       let car = new Cars(current);
+        car.save()
+           .then((data) => res.json(data))
+           .catch((err) => next(new Error(err)))
+    },
+
+    deleteCar : (req,res,next) => {
+
+        let userId = req.body.userId;
+        let stockId = req.body.stockId;
+        if(!stockId) {
+            next(new Error('Stock Id required!'))
+        } else {
+            Cars.remove({userId : userId , stockId : stockId})
+                .then((data)=> {
+                    res.json(data.result)
+                })
+                .catch((err)=> {
+                    next(new Error(err))
+                })
+        }
+
+    } ,
+
+    updateCar : (req,res,next) => {
+
+        let userId = req.body.userId;
+        let stockId = req.body.stockId;
+        if(!stockId) {
+            next(new Error('Stock Id required!'))
+        }  else {
+
+            let current = Object.assign({}, req.body);
+
+            Cars.findOneAndUpdate({userId : userId , stockId : stockId},
+                  current, { new : true} )
+                .then((data)=> {
+                    res.json(data)
+                })
+                .catch((err)=> {
+                    next(new Error(err))
+                })
+        }
     }
+
 };

@@ -13,7 +13,8 @@ let carItemSchema = new Schema({
                 return v.length > 2 && v.length < 20;
             },
             message: 'Invalid stockId'
-        }
+        },
+        unique: true
     },
     VINCode: {
         type: String,
@@ -54,9 +55,9 @@ let carItemSchema = new Schema({
             message: 'Invalid color'
         }
     },
-    retailPrice: {type: Currency, min: 0},
-    askPrice: {type: Currency, min: 0},
-    internationalPrice: {type: Currency, min: 0},
+    retailPrice: {type: Currency, min: 0 , default : 0},
+    askPrice: {type: Currency, min: 0 , default : 0},
+    internationalPrice: {type: Currency, min: 0 , default : 0},
     year: {type: Number, min: new Date().getFullYear() - 50, max: new Date().getFullYear()},
     mileage: {type: Number, min: 0},
     carState: {type: String, enum: ['New', 'Used']},
@@ -64,7 +65,16 @@ let carItemSchema = new Schema({
     entryDate: {type: Date},
     cost: {type: Currency, min: 0},
     dealerId: {type: Number},
-    amount: {type: Number, min: 1, default: 1}
+    amount: {type: Number, min: 1, default: 1},
+    userId:{ type : String,
+            validate: {
+            validator: function (v) {
+                return v.length < 30;
+            },
+            message: 'Invalid owner ID'
+                },
+            default : '0'
+            }
 });
 
 carItemSchema.index({stockId: 1}, {unique: true});

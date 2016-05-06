@@ -30,32 +30,65 @@ module.exports = {
     signPost : (req,res,next) => {
         let current = {};
         let fields = Object.keys(req.body);
-        fields.forEach((i) => {
-            if(i === 'password') {
-                let salt = bcrypt.genSaltSync(10);
-                let hash = bcrypt.hashSync(req.body.password, salt);
-                current[i] = hash
-            } else {
-                current[i] = req.body[i];
-            }
-        });
+        if(req.body.rules === 'Admin') {
+            next(new Error('Permission Denied'))
+        } else {
+            fields.forEach((i) => {
+                if(i === 'password') {
+                    let salt = bcrypt.genSaltSync(10);
+                    let hash = bcrypt.hashSync(req.body.password, salt);
+                    current[i] = hash
+                } else {
+                    current[i] = req.body[i];
+                }
+            });
+            let user = new User(current);
+            user.save()
+                .then((user)=> {res.json(user)})
+                .catch((err)=> { next(err)})
+        }
 
-        let user = new User(current);
-        user.save()
-            .then((user)=> {res.json(user)})
-            .catch((err)=> { next(err)})
+
+
     } ,
 
 
     checkRules : (req,res,next) => {
        let userId = req.body.userId;
-       User.findOne({_id :userId})
-           .then((data) => {
-               if(data.rules != 'Advanced User') {
-                   next(new Error('Permission denied'))
-               } else {
-                   next()
-               }
-           })
+       if(!userId || userId.length != 24) {
+           next(new Error('Invalid userId'))
+       } else {
+           User.findOne( {_id : userId })
+               .then((data) => {
+                   if(!data || data.rules === 'Simple User') {
+                       next(new Error('Permission denied'))
+                   } else {
+                       next()
+                   }
+               })
+               .catch((err) => {
+                   next(new Error(err))
+               })
+       }
+    },
+
+    adminCheck : (req,res,next) => {
+        let adminId = req.body.adminId;
+        if(!adminId || adminId.length != 24) {
+            next(new Error('Invalid userId'))
+        } else {
+            User.findOne( {_id : adminId })
+                .then((data) => {
+                    if(data.rules != 'Admin') {
+                        next(new Error('Permission denied'))
+                    } else {
+                        next()
+                    }
+                })
+                .catch((err) => {
+                    next(new Error(err))
+                })
+        }
     }
+
 };

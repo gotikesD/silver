@@ -44,13 +44,8 @@ let userSchema = new Schema({
     },
     createdAt: {type: Date, default: new Date()},
     rules : { type: String,
-              default: 'Simple User' ,
-              validate: {
-                validator: function (v) {
-                    return v.length > 10 && v.length < 20
-                },
-                message: 'Invalid type of user'
-              }
+              enum : ['Simple User' , 'Advanced User' , 'Admin'],
+              default: 'Simple User'
              }
 });
 

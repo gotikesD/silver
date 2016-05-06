@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const config = require('../config');
 const CarItem = require('../models/carsItem');
 
+
 mongoose.connect(config.database);
 
 let errorsCount = 0;
@@ -39,13 +40,11 @@ fs.createReadStream('../data/initialData.csv')
                 .then( () => {
                       totalCount++;
                 })
+
                .catch(err => {
                        errorsCount++;
-               } )
-
+               } );
             totalCount++
-
-
     })
     .on('end', () => {
        console.log('Total quantity ' + (totalCount - errorsCount));

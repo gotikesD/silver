@@ -64,7 +64,6 @@ module.exports = {
         if(!orderId || !stockID || !amount) {
             next(new Error('OrderId, stockId, amount required!'))
         }
-        console.log(orderId)
         Orders.update({
             _id : orderId, 'items.stockId' : stockID },
              {'items.$.amount' : amount}
