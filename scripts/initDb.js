@@ -45,6 +45,7 @@ fs.createReadStream('../data/initialData.csv')
 
             totalCount++
 
+
     })
     .on('end', () => {
        console.log('Total quantity ' + (totalCount - errorsCount));

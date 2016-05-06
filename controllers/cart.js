@@ -9,19 +9,21 @@ module.exports = {
        let userID =  req.body.userID;
        let stockID = req.body.stockID;
 
-        if(!userID || !stockID) {
+        if(!userID || !stockID ) {
             next(new Error('OrderID,StockID required'))
         }
 
         Orders.findOneAndUpdate({
            userId : userID },
-           {$push : { items : stockID }})
+           {$push : { items : { stockId : stockID }  }})
             .then((temp) => {
                 if(!temp) {
                     let order = new Orders();
-                    order.items.push(stockID);
+                    order.items.push({stockId : stockID });
                     order.userId = userID;
-                    order.save();
+                    order.save( (err)=> {
+                        if(err) next(new Error(err))
+                    });
                     res.json(order._id)
                 } else {
                     res.json(temp._id)
@@ -32,6 +34,48 @@ module.exports = {
                 next(new Error(err))
             })
     } ,
+
+    deleteFromOrder : (req,res,next) => {
+
+        let orderId =  req.body.orderId;
+        let stockID = req.body.stockID;
+
+        if(!orderId || !stockID) {
+            next(new Error('OrderID,StockID required'))
+        }
+
+        Orders.findOneAndUpdate({
+            _id : orderId },
+            { $pull : { items :  { stockId :stockID } }})
+            .then((temp) => {
+                    res.json(temp._id)
+            })
+            .catch((err) => {
+                next(new Error(err))
+            })
+    },
+
+    changeOrder : (req,res,next) => {
+
+        let orderId =  req.body.orderId;
+        let stockID = req.body.stockID;
+        let amount = req.body.amount;
+
+        if(!orderId || !stockID || !amount) {
+            next(new Error('OrderId, stockId, amount required!'))
+        }
+        console.log(orderId)
+        Orders.update({
+            _id : orderId, 'items.stockId' : stockID },
+             {'items.$.amount' : amount}
+        )
+            .then((answer) => {
+                res.json(answer)
+            })
+            .catch((err) => {
+                next(new Error(err))
+            })
+    },
 
     viewOrder : (req,res,next) => {
 
