@@ -1,25 +1,27 @@
 "use strict";
 const mongoose = require('mongoose');
-const Orders = require('../models/order')
+const Orders = require('../models/order');
+const Cars = require('../models/carsItem');
+const User = require('../models/user');
 
 module.exports = {
 
     addToOrder: (req, res, next) => {
 
-       let userID =  req.body.userID;
-       let stockID = req.body.stockID;
+       let userID =  req.body.userId;
+       let stockId = req.body.stockId;
 
-        if(!userID || !stockID ) {
-            next(new Error('OrderID,StockID required'))
+        if(!userID || !stockId ) {
+            next(new Error('UserId,StockId required'))
         }
 
         Orders.findOneAndUpdate({
            userId : userID },
-           {$push : { items : { stockId : stockID }  }})
+           {$push : { items : { stockId : stockId }  }})
             .then((temp) => {
                 if(!temp) {
                     let order = new Orders();
-                    order.items.push({stockId : stockID });
+                    order.items.push({stockId : stockId });
                     order.userId = userID;
                     order.save( (err)=> {
                         if(err) next(new Error(err))
@@ -78,12 +80,12 @@ module.exports = {
 
     viewOrder : (req,res,next) => {
 
-        let orderID = req.params.orderID;
-        if(!orderID) {
+        let orderId = req.params.orderId;
+        if(!orderId) {
             next(new Error('OrderID required'))
         }
 
-        Orders.findOne({_id : orderID})
+        Orders.findOne({_id : orderId})
             .then((data) => {
                 res.json(data)
             })
@@ -94,11 +96,37 @@ module.exports = {
 
     confirmOrder : (req,res,next) => {
 
-        let orderID = req.params.orderID;
-
-        Orders.findOneAndUpdate({_id : orderID}, {status : 'complete'})
+        let orderId = req.params.orderId;
+        Orders.findOneAndUpdate({_id : orderId}, {status : 'complete'} , {new : true})
             .then((data) => {
-                res.end('Status was changed')
+               let items =  data.items.map((i) => {
+                    return i.stockId
+                });
+
+                Cars.find({stockId:  { $in : items} })
+                    .then((cars)=> {
+                        cars.forEach(function(car) {
+                                car.bought += 1 ;
+                                car.save();
+                        });
+                    })
+                    .catch((err) => {
+                        next(new Error(err))
+                    });
+                return data;
+            })
+            .then((order) => {
+                let userId = order.userId;
+                User.findOne( {_id :userId })
+                    .then((user) => {
+                        user.sendOrders += 1;
+                        user.save();
+                        res.json(order._id)
+                    })
+                    .catch((err) => {
+                        next(new Error(err))
+                    })
+
             })
             .catch((err) => {
                 next(new Error(err))

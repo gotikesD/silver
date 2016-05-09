@@ -46,7 +46,8 @@ let userSchema = new Schema({
     rules : { type: String,
               enum : ['Simple User' , 'Advanced User' , 'Admin'],
               default: 'Simple User'
-             }
+             },
+    sendOrders : { type : Number, min : 0, default : 0}
 });
 
 

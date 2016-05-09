@@ -73,8 +73,9 @@ let carItemSchema = new Schema({
             },
             message: 'Invalid owner ID'
                 },
-            default : '0'
-            }
+            default : 'Admin'
+            },
+    bought : {type : Number, min : 0, default : 0}
 });
 
 carItemSchema.index({stockId: 1}, {unique: true});

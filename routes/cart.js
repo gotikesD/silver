@@ -9,9 +9,9 @@ router.delete('/', controller.deleteFromOrder);
 
 router.put('/', controller.changeOrder);
 
-router.get('/view/:orderID', controller.viewOrder);
+router.get('/view/:orderId', controller.viewOrder);
 
-router.get('/confirm/:orderID', controller.confirmOrder);
+router.get('/confirm/:orderId', controller.confirmOrder);
 
 
 

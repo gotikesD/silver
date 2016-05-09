@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const beautifyUnique = require('mongoose-beautiful-unique-validation');
 require('mongoose-currency').loadType(mongoose);
 
 
@@ -19,10 +18,10 @@ let orderSchema  = new Schema({
              },
              amount : { type : Number , default: 1 , min: 1, max : 9999 }
            }],
-    status : {type : String , default: 'pending'}
+    status : {type : String , default: 'pending'},
+    createdAt : {type : Date , default : new Date()}
 });
 
-orderSchema.plugin(beautifyUnique);
 
 let orderModel = mongoose.model('orderModel',orderSchema);
 
