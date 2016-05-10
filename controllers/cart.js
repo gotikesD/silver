@@ -60,7 +60,7 @@ module.exports = {
     changeOrder : (req,res,next) => {
 
         let orderId =  req.body.orderId;
-        let stockIDd = req.body.stockId;
+        let stockId = req.body.stockId;
         let amount = req.body.amount;
 
         if(!orderId || !stockId || !amount) {
@@ -71,7 +71,7 @@ module.exports = {
              {'items.$.amount' : amount}
         )
             .then((answer) => {
-                res.json(answer)
+                res.send('Modifed ' + answer.nModified +' items')
             })
             .catch((err) => {
                 next(new Error(err))
@@ -83,20 +83,24 @@ module.exports = {
         let orderId = req.params.orderId;
         if(!orderId) {
             next(new Error('OrderID required'))
+        } else {
+            Orders.findOne({_id : orderId})
+                .then((data) => {
+                    res.json(data)
+                })
+                .catch((err) => {
+                    next(new Error(err))
+                })
         }
-
-        Orders.findOne({_id : orderId})
-            .then((data) => {
-                res.json(data)
-            })
-            .catch((err) => {
-                next(new Error(err))
-            })
     },
 
     confirmOrder : (req,res,next) => {
 
         let orderId = req.params.orderId;
+
+        if(!orderId) {
+            next(new Error('OrderId required'))
+        }
         Orders.findOneAndUpdate({_id : orderId}, {status : 'complete'} , {new : true})
             .then((data) => {
                let items =  data.items.map((i) => {

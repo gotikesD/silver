@@ -15,16 +15,13 @@ module.exports = {
     },
 
     deleteUser: (req, res, next) => {
-        let userId = req.params.userId;
+        let userId = req.body.userId;
         if (!userId) {
             next(new Error('User Id required'))
         }
         User.remove({_id: userId}, (err, removedUser) => {
             if (err) next(new Error(err))
-            Cars.remove({userId: userId}, (err, removedCars) => {
-                if (err) next(new Error(err))
-                res.end('Deleted from UsersDB and CarsDB')
-            })
+            res.json('Deleted!')
         })
 
     },

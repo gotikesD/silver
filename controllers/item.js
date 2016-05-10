@@ -19,6 +19,9 @@ module.exports = {
         let queryId = req.params.id;
         Cars.findOne({_id : queryId})
             .then((data) => {
+                if(!data) {
+                    next(new Error('Not Found'))
+                }
                 res.json(data)
             })
             .catch((err) => {
@@ -56,6 +59,9 @@ module.exports = {
         } else {
             Cars.remove({ stockId : stockId})
                 .then((data)=> {
+                    if(!data) {
+                        next(new Error('Cars with this stockId not Found'))
+                    }
                     Users.findOneAndUpdate(
                         { ownCars : stockId },
                         {$pull : { ownCars : stockId}},
@@ -66,11 +72,11 @@ module.exports = {
                          })
                         .catch((err)=> {
                             next(new Error(err))
-                        })
+                        });
                     return data
                 })
-                .then((removed)=> {
-                    res.json(removed.result)
+                .then(()=> {
+                    res.end('Deleted from cars DB and user DB')
                 })
                 .catch((err)=> {
                     next(new Error(err))

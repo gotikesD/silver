@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.16.1",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.0",
     "csv-parser": "^1.9.3",
