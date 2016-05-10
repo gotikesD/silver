@@ -66,15 +66,6 @@ let carItemSchema = new Schema({
     cost: {type: Currency, min: 0},
     dealerId: {type: Number},
     amount: {type: Number, min: 1, default: 1},
-    userId:{ type : String,
-            validate: {
-            validator: function (v) {
-                return v.length < 30;
-            },
-            message: 'Invalid owner ID'
-                },
-            default : 'Admin'
-            },
     bought : {type : Number, min : 0, default : 0}
 });
 

@@ -44,10 +44,11 @@ let userSchema = new Schema({
     },
     createdAt: {type: Date, default: new Date()},
     rules : { type: String,
-              enum : ['Simple User' , 'Advanced User' , 'Admin'],
-              default: 'Simple User'
+              enum : ['Simple' , 'Advanced' , 'Admin'],
+              default: 'Simple'
              },
-    sendOrders : { type : Number, min : 0, default : 0}
+    sendOrders : { type : Number, min : 0, default : 0},
+    ownCars: {type:Array, default :[] , unique: true }
 });
 
 

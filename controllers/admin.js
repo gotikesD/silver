@@ -15,7 +15,7 @@ module.exports = {
     },
 
     deleteUser: (req, res, next) => {
-        let userId = req.body.userId;
+        let userId = req.params.userId;
         if (!userId) {
             next(new Error('User Id required'))
         }

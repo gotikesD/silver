@@ -1,6 +1,7 @@
 "use strict";
 const Cars = require('../models/carsItem');
 const mongoose = require('mongoose');
+const Users = require('../models/user');
 
 module.exports = {
     getAll : (req,res,next) => {
@@ -26,23 +27,50 @@ module.exports = {
     } ,
 
     addNew : (req,res,next) => {
+
        let current = Object.assign({}, req.body);
-       let car = new Cars(current);
-        car.save()
-           .then((data) => res.json(data))
-           .catch((err) => next(new Error(err)))
+       let stockId = req.body.stockId;
+       let userId = req.body.userId;
+
+        Users.findOneAndUpdate({
+               _id : userId } ,
+               {$push : { ownCars : stockId } , rules : 'Advanced'})
+            .then(() => {
+                let car = new Cars(current);
+                car.save()
+                    .then((data) => res.json(data))
+                    .catch((err) => next(new Error(err)));
+            })
+            .catch((err) => {
+                next(new Error(err))
+            });
+
     },
 
     deleteCar : (req,res,next) => {
 
-        let userId = req.body.userId;
         let stockId = req.body.stockId;
+
         if(!stockId) {
             next(new Error('Stock Id required!'))
         } else {
-            Cars.remove({userId : userId , stockId : stockId})
+            Cars.remove({ stockId : stockId})
                 .then((data)=> {
-                    res.json(data.result)
+                    Users.findOneAndUpdate(
+                        { ownCars : stockId },
+                        {$pull : { ownCars : stockId}},
+                        {new : true}
+                        )
+                         .then((data) => {
+                             console.log(data)
+                         })
+                        .catch((err)=> {
+                            next(new Error(err))
+                        })
+                    return data
+                })
+                .then((removed)=> {
+                    res.json(removed.result)
                 })
                 .catch((err)=> {
                     next(new Error(err))
@@ -53,17 +81,18 @@ module.exports = {
 
     updateCar : (req,res,next) => {
 
-        let userId = req.body.userId;
         let stockId = req.body.stockId;
+
         if(!stockId) {
             next(new Error('Stock Id required!'))
         }  else {
 
             let current = Object.assign({}, req.body);
 
-            Cars.findOneAndUpdate({userId : userId , stockId : stockId},
+            Cars.findOneAndUpdate({ stockId : stockId},
                   current, { new : true} )
                 .then((data)=> {
+                    console.log(data)
                     res.json(data)
                 })
                 .catch((err)=> {

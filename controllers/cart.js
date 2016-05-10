@@ -40,15 +40,15 @@ module.exports = {
     deleteFromOrder : (req,res,next) => {
 
         let orderId =  req.body.orderId;
-        let stockID = req.body.stockID;
+        let stockId = req.body.stockId;
 
-        if(!orderId || !stockID) {
+        if(!orderId || !stockId) {
             next(new Error('OrderID,StockID required'))
         }
 
         Orders.findOneAndUpdate({
             _id : orderId },
-            { $pull : { items :  { stockId :stockID } }})
+            { $pull : { items :  { stockId :stockId } }})
             .then((temp) => {
                     res.json(temp._id)
             })
@@ -60,14 +60,14 @@ module.exports = {
     changeOrder : (req,res,next) => {
 
         let orderId =  req.body.orderId;
-        let stockID = req.body.stockID;
+        let stockIDd = req.body.stockId;
         let amount = req.body.amount;
 
-        if(!orderId || !stockID || !amount) {
+        if(!orderId || !stockId || !amount) {
             next(new Error('OrderId, stockId, amount required!'))
         }
         Orders.update({
-            _id : orderId, 'items.stockId' : stockID },
+            _id : orderId, 'items.stockId' : stockId },
              {'items.$.amount' : amount}
         )
             .then((answer) => {
