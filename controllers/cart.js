@@ -103,6 +103,9 @@ module.exports = {
         }
         Orders.findOneAndUpdate({_id : orderId}, {status : 'complete'} , {new : true})
             .then((data) => {
+                if(!data) {
+                    next(new Error('Order not found'))
+                }
                let items =  data.items.map((i) => {
                     return i.stockId
                 });
@@ -123,6 +126,7 @@ module.exports = {
                 let userId = order.userId;
                 User.findOne( {_id :userId })
                     .then((user) => {
+                        console.log(user)
                         user.sendOrders += 1;
                         user.save();
                         res.json(order._id)

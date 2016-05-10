@@ -3,7 +3,7 @@ const User = require('../models/user');
 const sha256 = require('sha256');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
+const Order = require('../models/order');
 
 module.exports = {
 
@@ -86,5 +86,29 @@ module.exports = {
             .catch((err) => {
                 next(new Error(err))
             })
+    } ,
+
+    cartRulesCheck : (req,res,next) => {
+        let token = req.headers['x-access-token'];
+
+        if(!token) {
+            next(new Error('Header x-access-token required'))
+        }
+
+        Order.findOne({ _id : req.params.orderId })
+              .then((data) => {
+                  if(!data) {
+                      next(new Error('Not Found'))
+                  }
+                  else if(data.userId === token) {
+                      next()
+                  } else {
+                      next(new Error('Permission denied'))
+                  }
+              })
+              .catch((err) => {
+                next(new Error(err))
+              })
+
     }
 };

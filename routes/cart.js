@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/cart');
-
+const { cartRulesCheck } = require('../controllers/auth');
 
 router.post('/', controller.addToOrder);
 
-router.delete('/', controller.deleteFromOrder);
+router.delete('/:orderId',cartRulesCheck, controller.deleteFromOrder);
 
-router.put('/', controller.changeOrder);
+router.put('/:orderId',cartRulesCheck, controller.changeOrder);
 
-router.get('/view/:orderId', controller.viewOrder);
+router.get('/view/:orderId', cartRulesCheck, controller.viewOrder);
 
-router.get('/confirm/:orderId', controller.confirmOrder);
+router.get('/confirm/:orderId',cartRulesCheck, controller.confirmOrder);
 
 
 
