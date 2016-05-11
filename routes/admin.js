@@ -5,15 +5,15 @@ const router = express.Router();
 const controller = require('../controllers/admin');
 const { adminCheck , checkUserStatus } = require('../controllers/auth');
 
-router.get('/allUsers/:userId',checkUserStatus, adminCheck, controller.getAllUsers);
+router.get('/users/',checkUserStatus, adminCheck, controller.getAllUsers);
 
-router.delete('/deleteUser/:userId',checkUserStatus, adminCheck, controller.deleteUser);
+router.get('/users/:userId',checkUserStatus, adminCheck, controller.userInfo);
 
-router.get('/topCars/:userId',checkUserStatus ,adminCheck, controller.viewTopCars);
+router.get('/topCars',checkUserStatus ,adminCheck, controller.viewTopCars);
 
-router.get('/topUsers/:userId',checkUserStatus, adminCheck, controller.viewTopUsers);
+router.get('/topUsers',checkUserStatus, adminCheck, controller.viewTopUsers);
 
-router.get('/lastOrders/:userId',checkUserStatus, adminCheck, controller.viewLastWeekOrders);
+router.get('/lastOrders',checkUserStatus, adminCheck, controller.viewLastWeekOrders);
 
 
 module.exports = router;

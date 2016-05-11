@@ -9,9 +9,9 @@ router.delete('/:orderId',checkUserStatus ,cartRulesCheck , controller.deleteFro
 
 router.put('/:orderId',checkUserStatus,cartRulesCheck, controller.changeOrder);
 
-router.get('/view/:orderId',checkUserStatus, cartRulesCheck, controller.viewOrder);
+router.get('/view/:cartId',checkUserStatus, cartRulesCheck, controller.viewOrder);
 
-router.get('/confirm/:orderId',checkUserStatus,cartRulesCheck, controller.confirmOrder);
+router.post('/confirm/:cartId',checkUserStatus,cartRulesCheck, controller.confirmOrder);
 
 
 

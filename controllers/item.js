@@ -2,6 +2,7 @@
 const Cars = require('../models/carsItem');
 const mongoose = require('mongoose');
 const Users = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     getAll : (req,res,next) => {
@@ -33,16 +34,21 @@ module.exports = {
 
        let current = Object.assign({}, req.body);
        let stockId = req.body.stockId;
-       let userId = req.body.userId;
+       let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
+       let userId = token._doc._id;
 
         Users.findOneAndUpdate({
                _id : userId } ,
                {$push : { ownCars : stockId } , rules : 'Advanced'})
-            .then(() => {
-                let car = new Cars(current);
-                car.save()
-                    .then((data) => res.json(data))
-                    .catch((err) => next(new Error(err)));
+            .then((data) => {
+                if(!data) {
+                    next(new Error(' User Not Find'))
+                } else{
+                    let car = new Cars(current);
+                    car.save()
+                        .then((cur) => res.json(cur))
+                        .catch((err) => next(new Error(err)));
+                }
             })
             .catch((err) => {
                 next(new Error(err))
@@ -105,6 +111,30 @@ module.exports = {
                     next(new Error(err))
                 })
         }
+    } ,
+
+    viewAllUserCars : (req,res,next) => {
+        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
+        let userCars = token._doc.ownCars;
+        Cars.find({stockId:  { $in : userCars} })
+            .then((data) => {
+                res.json(data)
+            })
+            .catch((err)=> {
+                next(new Error(err))
+            })
+    },
+
+    viewSingleUserCar : (req,res,next) => {
+        let carId = req.params.carId;
+
+        Cars.findOne({_id: carId })
+            .then((data) => {
+                res.json(data)
+            })
+            .catch((err)=> {
+                next(new Error(err))
+            })
     }
 
 };

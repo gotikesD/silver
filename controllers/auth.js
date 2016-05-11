@@ -12,16 +12,15 @@ module.exports = {
         User.findOne({email : req.body.email})
             .then((user) => {
                 if(!user) {next(new Error('Not Find'))}
+                else {
+                    let compare = bcrypt.compareSync(req.body.password, user.password);
 
-                let compare = bcrypt.compareSync(req.body.password, user.password);
-
-                if(compare) {
-                    user.save()
-                        .catch((err)=> { next(err)});
-                    let token = jwt.sign(user, 'silverSecret');
-                    res.json(token)
-                } else {
-                    next(new Error('Bad password'))
+                    if(compare) {
+                        let token = jwt.sign(user, 'silverSecret');
+                        res.json(token)
+                    } else {
+                        next(new Error('Bad password'))
+                    }
                 }
             })
             .catch((err) => { next(err)})
@@ -42,7 +41,7 @@ module.exports = {
     } ,
 
     checkUserStatus : (req,res,next) => {
-        if(!req.headers.x-access-token) {
+        if(!req.headers['x-access-token']) {
             next(new Error('Token not found'))
         } else {
             next()
@@ -50,7 +49,10 @@ module.exports = {
     },
 
     checkRules : (req,res,next) => {
-       let userId = req.body.userId;
+
+        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
+        let userId = token._doc._id;
+
            User.findOne( {_id : userId })
                .then((data) => {
                    if(!data || data.rules === 'Simple User') {
@@ -65,7 +67,10 @@ module.exports = {
     },
 
     adminCheck : (req,res,next) => {
-        let userId = req.params.userId;
+
+        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
+        let userId = token._doc._id;
+
         User.findOne({_id: userId})
             .then((data) => {
                 if (!data || data.rules != 'Admin') {
@@ -80,7 +85,8 @@ module.exports = {
     } ,
 
     checkOwnCar : (req,res,next) => {
-        let userId = req.body.userId;
+        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
+        let userId = token._doc._id;
         let stockId = req.body.stockId;
         User.findOne({_id: userId , ownCars : stockId  })
             .then((data) => {
@@ -96,25 +102,30 @@ module.exports = {
     } ,
 
     cartRulesCheck : (req,res,next) => {
-        let token = req.headers['x-access-token'];
+
+
+        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
+        let userId = token._doc._id;
 
         if(!token) {
             next(new Error('Header x-access-token required'))
+        } else {
+            Order.findOne({ _id : req.params.cartId })
+                .then((data) => {
+                    if(!data) {
+                        next(new Error('Not Found'))
+                    }
+                    else if(data.userId === userId) {
+                        next()
+                    } else {
+                        next(new Error('Permission denied'))
+                    }
+                })
+                .catch((err) => {
+                    next(new Error(err))
+                })
         }
 
-        Order.findOne({ _id : req.params.orderId })
-              .then((data) => {
-                  if(!data) {
-                      next(new Error('Not Found'))
-                  }
-                  else if(data.userId === token) {
-                      next()
-                  } else {
-                      next(new Error('Permission denied'))
-                  }
-              })
-              .catch((err) => {
-                next(new Error(err))
-              })
+
     }
 };

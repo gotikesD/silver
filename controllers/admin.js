@@ -14,14 +14,16 @@ module.exports = {
             })
     },
 
-    deleteUser: (req, res, next) => {
-        let userId = req.body.userId;
+    userInfo: (req, res, next) => {
+
+        let userId = req.params.userId;
+
         if (!userId) {
             next(new Error('User Id required'))
         }
-        User.remove({_id: userId}, (err, removedUser) => {
-            if (err) next(new Error(err))
-            res.send('Deleted!')
+        User.findOne({_id: userId}, (err, user) => {
+            if (err) next(new Error(err));
+            res.json(user)
         })
 
     },
