@@ -39,7 +39,7 @@ module.exports = {
 
     deleteFromOrder : (req,res,next) => {
 
-        let orderId =  req.body.orderId;
+        let orderId =  req.params.orderId;
         let stockId = req.body.stockId;
 
         if(!orderId || !stockId) {

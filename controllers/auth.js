@@ -41,6 +41,13 @@ module.exports = {
                 .catch((err)=> { next(err)})
     } ,
 
+    checkUserStatus : (req,res,next) => {
+        if(!req.headers.x-access-token) {
+            next(new Error('Token not found'))
+        } else {
+            next()
+        }
+    },
 
     checkRules : (req,res,next) => {
        let userId = req.body.userId;
@@ -109,6 +116,5 @@ module.exports = {
               .catch((err) => {
                 next(new Error(err))
               })
-
     }
 };

@@ -21,7 +21,7 @@ module.exports = {
         }
         User.remove({_id: userId}, (err, removedUser) => {
             if (err) next(new Error(err))
-            res.json('Deleted!')
+            res.send('Deleted!')
         })
 
     },

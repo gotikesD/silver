@@ -3,16 +3,16 @@ const express = require('express');
 const router = express.Router();
 
 const controller = require('../controllers/item');
-const { checkRules , checkOwnCar } = require('../controllers/auth');
+const { checkRules , checkOwnCar , checkUserStatus } = require('../controllers/auth');
 
 router.get('/', controller.getAll);
 router.get('/cars/:id', controller.getSingle);
-router.post('/new' , controller.addNew);
+router.post('/new' ,checkUserStatus, controller.addNew);
 
 // available only  to the advanced user
 
-router.delete('/delete', checkRules , checkOwnCar , controller.deleteCar);
-router.put('/update', checkRules , checkOwnCar, controller.updateCar);
+router.delete('/delete',checkUserStatus, checkRules , checkOwnCar , controller.deleteCar);
+router.put('/update',checkUserStatus, checkRules , checkOwnCar, controller.updateCar);
 
 
 module.exports = router;

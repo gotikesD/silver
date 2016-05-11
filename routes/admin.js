@@ -3,17 +3,17 @@ const express = require('express');
 const router = express.Router();
 
 const controller = require('../controllers/admin');
-const { adminCheck } = require('../controllers/auth');
+const { adminCheck , checkUserStatus } = require('../controllers/auth');
 
-router.get('/allUsers/:userId', adminCheck, controller.getAllUsers);
+router.get('/allUsers/:userId',checkUserStatus, adminCheck, controller.getAllUsers);
 
-router.delete('/deleteUser/:userId', adminCheck, controller.deleteUser);
+router.delete('/deleteUser/:userId',checkUserStatus, adminCheck, controller.deleteUser);
 
-router.get('/topCars/:userId', adminCheck, controller.viewTopCars);
+router.get('/topCars/:userId',checkUserStatus ,adminCheck, controller.viewTopCars);
 
-router.get('/topUsers/:userId', adminCheck, controller.viewTopUsers);
+router.get('/topUsers/:userId',checkUserStatus, adminCheck, controller.viewTopUsers);
 
-router.get('/lastOrders/:userId', adminCheck, controller.viewLastWeekOrders);
+router.get('/lastOrders/:userId',checkUserStatus, adminCheck, controller.viewLastWeekOrders);
 
 
 module.exports = router;
