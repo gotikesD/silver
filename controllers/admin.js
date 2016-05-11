@@ -19,7 +19,9 @@ module.exports = {
         let userId = req.params.userId;
 
         if (!userId) {
-            next(new Error('User Id required'))
+            let err = new Error('User Id required');
+            err.statusCode = 404;
+            next(err);
         }
         User.findOne({_id: userId}, (err, user) => {
             if (err) next(new Error(err));

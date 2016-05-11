@@ -11,7 +11,7 @@
 # Route - http://localhost:3000/cars/:id
 # Type - get
 # Requirements - query param 'id'
-# Success return - Array of Objects(Cars Info)
+# Success return - Object(Car Info)
 
 # Route - http://localhost:3000/auth/sign
 # Type - post
@@ -52,7 +52,7 @@
 # Type - get
 # Requirements - req.headers : x-access-token
 # Requirements - req.params : orderId
-# Success return -String (How many items were updated)
+# Success return - Object(Full Order InFo)
 
 # Route - http://localhost:3000/cart/confirm/:cartId
 # Type - post
@@ -89,6 +89,12 @@
 # Type - get
 # Requirements - req.headers : x-access-token
 # Success return -Array of Objects(User own cars) 
+
+# Route - http://localhost:3000/advanced/cars/:carId
+# Type - get
+# Requirements - req.headers : x-access-token
+# Requirements - req.params : carId
+# Success return - Objects(Single car Info) 
 
 
 

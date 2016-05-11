@@ -40,7 +40,12 @@ module.exports = {
             password: req.body.password,
             date : req.body.date
         }, productJoi, (err, userInfo) => {
-            err ? next(err) : next();
+            if(err) {
+                err.statusCode = 404;
+                next(err)
+            } else {
+                next();
+            }
         })
     }
 };

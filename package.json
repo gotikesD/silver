@@ -14,11 +14,17 @@
     "body-parser": "^1.15.0",
     "csv-parser": "^1.9.3",
     "express": "^4.13.4",
+    "express-status-error": "0.0.3",
+    "http-status-error": "^1.1.1",
     "joi": "^8.0.5",
     "jsonwebtoken": "^6.2.0",
+    "mocha": "^2.4.5",
     "mongoose": "^4.4.14",
     "mongoose-beautiful-unique-validation": "^3.0.0",
     "mongoose-currency": "^0.2.0",
-    "sha256": "^0.2.0"
+    "sha256": "^0.2.0",
+    "should": "^8.3.1",
+    "supertest": "^1.2.0",
+    "tape": "^4.5.1"
   }
 }

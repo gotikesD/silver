@@ -14,8 +14,10 @@ module.exports = {
 
        let stockId = req.body.stockId;
 
-        if(!userId || !stockId ) {
-            next(new Error('UserId,StockId required'))
+        if( !userId || !stockId ) {
+            let err = new Error('UserId,StockId required');
+            err.statusCode = 404;
+            next(err);
         } else {
             Orders.findOneAndUpdate({
                     userId : userId },
@@ -46,7 +48,9 @@ module.exports = {
         let stockId = req.body.stockId;
 
         if(!orderId || !stockId) {
-            next(new Error('OrderID,StockID required'))
+            let err = new Error('OrderId,StockId required');
+            err.statusCode = 404;
+            next(err);
         } else {
             Orders.findOneAndUpdate({
                     _id : orderId },
@@ -67,7 +71,9 @@ module.exports = {
         let amount = req.body.amount;
 
         if(!orderId || !stockId || !amount) {
-            next(new Error('OrderId, stockId, amount required!'))
+            let err = new Error('OrderId, stockId, amount required!');
+            err.statusCode = 404;
+            next(err);
         } else {
             Orders.update({
                     _id : orderId, 'items.stockId' : stockId },
@@ -87,7 +93,9 @@ module.exports = {
 
         let cartId = req.params.cartId;
         if(!cartId) {
-            next(new Error('OrderID required'))
+            let err = new Error('OrderID required');
+            err.statusCode = 404;
+            next(err);
         } else {
             Orders.findOne({_id : cartId})
                 .then((data) => {
@@ -104,12 +112,16 @@ module.exports = {
         let cartId = req.params.cartId;
 
         if(!cartId) {
-            next(new Error('OrderId required'))
+            let err = new Error('OrderID required');
+            err.statusCode = 404;
+            next(err);
         } else {
             Orders.findOneAndUpdate({_id : cartId}, {status : 'complete'} , {new : true})
                 .then((data) => {
                     if(!data) {
-                        next(new Error('Order not found'))
+                        let err = new Error('Order not found');
+                        err.statusCode = 404;
+                        next(err);
                     }
                     let items =  data.items.map((i) => {
                         return i.stockId
@@ -131,7 +143,6 @@ module.exports = {
                     let userId = order.userId;
                     User.findOne( {_id :userId })
                         .then((user) => {
-                            console.log(user)
                             user.sendOrders += 1;
                             user.save();
                             res.json(order._id)

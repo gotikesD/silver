@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Users = require('../models/user');
 const jwt = require('jsonwebtoken');
 
+
 module.exports = {
     getAll : (req,res,next) => {
         Cars.find({}, {_id : 1, retailPrice: 1, color : 1, model : 1})
@@ -11,7 +12,7 @@ module.exports = {
                 res.json(data)
             })
             .catch((err) => {
-                console.log(err);
+
                 next(new Error(err))
             })
     } ,
@@ -21,9 +22,12 @@ module.exports = {
         Cars.findOne({_id : queryId})
             .then((data) => {
                 if(!data) {
-                    next(new Error('Not Found'))
+                    let err = new Error('Not found');
+                    err.statusCode = 404;
+                    next(err);
+                } else {
+                    res.json(data)
                 }
-                res.json(data)
             })
             .catch((err) => {
                 next(new Error(err))
@@ -37,22 +41,30 @@ module.exports = {
        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
        let userId = token._doc._id;
 
-        Users.findOneAndUpdate({
-               _id : userId } ,
-               {$push : { ownCars : stockId } , rules : 'Advanced'})
-            .then((data) => {
-                if(!data) {
-                    next(new Error(' User Not Find'))
-                } else{
-                    let car = new Cars(current);
-                    car.save()
-                        .then((cur) => res.json(cur))
-                        .catch((err) => next(new Error(err)));
-                }
-            })
-            .catch((err) => {
-                next(new Error(err))
-            });
+        if(!stockId) {
+            let err = new Error('StockId required');
+            err.statusCode = 404;
+            next(err);
+        } else {
+            Users.findOneAndUpdate({
+                    _id : userId } ,
+                {$push : { ownCars : stockId } , rules : 'Advanced'})
+                .then((data) => {
+                    if(!data) {
+                        let err = new Error('User Not found');
+                        err.statusCode = 404;
+                        next(err);
+                    } else{
+                        let car = new Cars(current);
+                        car.save()
+                            .then((cur) => res.json(cur))
+                            .catch((err) => next(new Error(err)));
+                    }
+                })
+                .catch((err) => {
+                    next(new Error(err))
+                });
+        }
 
     },
 
@@ -61,12 +73,16 @@ module.exports = {
         let stockId = req.body.stockId;
 
         if(!stockId) {
-            next(new Error('Stock Id required!'))
+            let err = new Error('Stock Id required');
+            err.statusCode = 404;
+            next(err);
         } else {
             Cars.remove({ stockId : stockId})
                 .then((data)=> {
                     if(!data) {
-                        next(new Error('Cars with this stockId not Found'))
+                        let err = new Error('Cars with this stockId not Found');
+                        err.statusCode = 404;
+                        next(err);
                     }
                     Users.findOneAndUpdate(
                         { ownCars : stockId },
@@ -96,7 +112,9 @@ module.exports = {
         let stockId = req.body.stockId;
 
         if(!stockId) {
-            next(new Error('Stock Id required!'))
+            let err = new Error('Stock Id required!');
+            err.statusCode = 404;
+            next(err);
         }  else {
 
             let current = Object.assign({}, req.body);

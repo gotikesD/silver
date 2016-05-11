@@ -5,13 +5,20 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Order = require('../models/order');
 
+
+
 module.exports = {
 
 
     loginPost : (req,res,next) => {
         User.findOne({email : req.body.email})
             .then((user) => {
-                if(!user) {next(new Error('Not Find'))}
+                if(!user) {
+                    let err = new Error('Not Found');
+                    err.statusCode = 404;
+
+                    next(err)
+                }
                 else {
                     let compare = bcrypt.compareSync(req.body.password, user.password);
 
@@ -19,7 +26,9 @@ module.exports = {
                         let token = jwt.sign(user, 'silverSecret');
                         res.json(token)
                     } else {
-                        next(new Error('Bad password'))
+                        let err = new Error('Bad password');
+                        err.statusCode = 404;
+                        next(err)
                     }
                 }
             })
@@ -37,12 +46,17 @@ module.exports = {
             let user = new User(fields);
             user.save()
                 .then((user)=> {res.json(user)})
-                .catch((err)=> { next(err)})
+                .catch((err)=> {
+                    err.statusCode = 404;
+                    next(err)
+                })
     } ,
 
     checkUserStatus : (req,res,next) => {
         if(!req.headers['x-access-token']) {
-            next(new Error('Token not found'))
+            let err = new Error('Token not found');
+            err.statusCode = 404;
+            next(err);
         } else {
             next()
         }
@@ -56,7 +70,10 @@ module.exports = {
            User.findOne( {_id : userId })
                .then((data) => {
                    if(!data || data.rules === 'Simple User') {
-                       next(new Error('Permission denied'))
+                       let err = new Error('Permission denied');
+                       err.statusCode = 403;
+
+                       next(err)
                    } else {
                        next()
                    }
@@ -74,7 +91,11 @@ module.exports = {
         User.findOne({_id: userId})
             .then((data) => {
                 if (!data || data.rules != 'Admin') {
-                    next(new Error('Permission denied'))
+
+                    let err = new Error('Permission denied');
+                    err.statusCode = 403;
+
+                    next(err)
                 } else {
                     next()
                 }
@@ -91,7 +112,10 @@ module.exports = {
         User.findOne({_id: userId , ownCars : stockId  })
             .then((data) => {
                if(!data) {
-                   next(new Error('Permission denied'))
+                   let err = new Error('Permission denied');
+                   err.statusCode = 403;
+
+                   next(err)
                } else {
                    next()
                }
@@ -103,22 +127,29 @@ module.exports = {
 
     cartRulesCheck : (req,res,next) => {
 
-
+        console.log(req.params)
         let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
         let userId = token._doc._id;
-
+        let order = req.params.orderId || req.params.cartId;
         if(!token) {
-            next(new Error('Header x-access-token required'))
+            let err = new Error('Header x-access-token required');
+            err.statusCode = 404;
+            next(err);
         } else {
-            Order.findOne({ _id : req.params.cartId })
+            Order.findOne({ _id : order })
                 .then((data) => {
                     if(!data) {
-                        next(new Error('Not Found'))
+                        let err = new Error('Not Found');
+                        err.statusCode = 404;
+                        next(err);
                     }
                     else if(data.userId === userId) {
                         next()
                     } else {
-                        next(new Error('Permission denied'))
+                        let err = new Error('Permission denied');
+                        err.statusCode = 403;
+
+                        next(err)
                     }
                 })
                 .catch((err) => {
