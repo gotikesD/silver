@@ -3,18 +3,14 @@ const Cars = require('../models/carsItem');
 const mongoose = require('mongoose');
 const Users = require('../models/user');
 const jwt = require('jsonwebtoken');
-
+const JSONStream = require('JSONStream')
 
 module.exports = {
     getAll : (req,res,next) => {
         Cars.find({}, {_id : 1, retailPrice: 1, color : 1, model : 1})
-            .then((data) => {
-                res.json(data)
-            })
-            .catch((err) => {
-
-                next(err)
-            })
+            .stream()
+            .pipe(JSONStream.stringify())
+            .pipe(res);
     } ,
 
     getSingle : (req,res,next) => {
