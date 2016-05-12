@@ -3,17 +3,9 @@ const supertest = require("supertest");
 const should = require("should");
 
 const server = supertest.agent("http://localhost:3000");
+const config = require('../config/tests');
 
 
-const CAR = '57344fc4d94982eb1d19a009';
-const FAKE_CAR = '5733109a22244b5e88d1893e';
-const ORDER_ID = '573200d6f16569125475c10e';
-const FAKE_ORDER_ID = '443200d6f16569125475c10e';
-const USER_ID = '573194ccd146638f11967807';
-const FAKE_USER_ID = '573194ccd146638f61967807';
-
-const ADMIN_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwiZ2V0dGVycyI6e30sIndhc1BvcHVsYXRlZCI6ZmFsc2UsImFjdGl2ZVBhdGhzIjp7InBhdGhzIjp7ImNyZWF0ZWRBdCI6ImluaXQiLCJydWxlcyI6ImluaXQiLCJzZW5kT3JkZXJzIjoiaW5pdCIsIm93bkNhcnMiOiJpbml0IiwiX192IjoiaW5pdCIsInBhc3N3b3JkIjoiaW5pdCIsImVtYWlsIjoiaW5pdCIsInN1ck5hbWUiOiJpbml0IiwibmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJfX3YiOnRydWUsImNyZWF0ZWRBdCI6dHJ1ZSwicnVsZXMiOnRydWUsInNlbmRPcmRlcnMiOnRydWUsIm93bkNhcnMiOnRydWUsInBhc3N3b3JkIjp0cnVlLCJlbWFpbCI6dHJ1ZSwic3VyTmFtZSI6dHJ1ZSwibmFtZSI6dHJ1ZSwiX2lkIjp0cnVlfSwibW9kaWZ5Ijp7fSwicmVxdWlyZSI6e319LCJzdGF0ZU5hbWVzIjpbInJlcXVpcmUiLCJtb2RpZnkiLCJpbml0IiwiZGVmYXVsdCIsImlnbm9yZSJdfSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9fSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImNyZWF0ZWRBdCI6IjIwMTYtMDUtMTBUMTI6MjI6NTMuNTk0WiIsInJ1bGVzIjoiQWRtaW4iLCJzZW5kT3JkZXJzIjowLCJvd25DYXJzIjpbXSwiX192IjowLCJwYXNzd29yZCI6IiQyYSQxMCRTQkd0a0NoWFlRSGo2RzlRWmdCYm1ldUV3U1pUUkdpY1VRZmdTT1hEa3pObTMwUXRkTUE4QyIsImVtYWlsIjoiYWRtaW5AbWFpbC5ydSIsInN1ck5hbWUiOiJBZG1pbiIsIm5hbWUiOiJBZG1pbiIsIl9pZCI6IjU3MzFkMmMyYTdkNGMwYTUzN2QxMjRjZCJ9LCJfcHJlcyI6eyIkX19vcmlnaW5hbF9zYXZlIjpbbnVsbCxudWxsXX0sIl9wb3N0cyI6eyIkX19vcmlnaW5hbF9zYXZlIjpbXX0sImlhdCI6MTQ2MzA0NjM3NH0.RpTWRPUAJ87Ow35Pjxhl-wiItzM4PK8XG3XNJwgAgW4';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwiZ2V0dGVycyI6e30sIndhc1BvcHVsYXRlZCI6ZmFsc2UsImFjdGl2ZVBhdGhzIjp7InBhdGhzIjp7ImNyZWF0ZWRBdCI6ImluaXQiLCJydWxlcyI6ImluaXQiLCJzZW5kT3JkZXJzIjoiaW5pdCIsIm93bkNhcnMiOiJpbml0IiwiX192IjoiaW5pdCIsInBhc3N3b3JkIjoiaW5pdCIsImVtYWlsIjoiaW5pdCIsInN1ck5hbWUiOiJpbml0IiwibmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJfX3YiOnRydWUsImNyZWF0ZWRBdCI6dHJ1ZSwicnVsZXMiOnRydWUsInNlbmRPcmRlcnMiOnRydWUsIm93bkNhcnMiOnRydWUsInBhc3N3b3JkIjp0cnVlLCJlbWFpbCI6dHJ1ZSwic3VyTmFtZSI6dHJ1ZSwibmFtZSI6dHJ1ZSwiX2lkIjp0cnVlfSwibW9kaWZ5Ijp7fSwicmVxdWlyZSI6e319LCJzdGF0ZU5hbWVzIjpbInJlcXVpcmUiLCJtb2RpZnkiLCJpbml0IiwiZGVmYXVsdCIsImlnbm9yZSJdfSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9fSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImNyZWF0ZWRBdCI6IjIwMTYtMDUtMTBUMDc6NTg6MjAuMDc5WiIsInJ1bGVzIjoiQWR2YW5jZWQiLCJzZW5kT3JkZXJzIjo1OSwib3duQ2FycyI6W251bGwsIjIwMjAyMyJdLCJfX3YiOjAsInBhc3N3b3JkIjoiJDJhJDEwJEw3a2hHZy92OVFwczJzcE9LeHRUcmVpL2F4aHZpaXZmLjcxNFBKWmQxaWNETFhYWFVxVk5hIiwiZW1haWwiOiJ0ZXN0M0BtYWlsLnJ1Iiwic3VyTmFtZSI6IlRlc3QzIiwibmFtZSI6IlRlc3QzIiwiX2lkIjoiNTczMTk0Y2NkMTQ2NjM4ZjExOTY3ODA3In0sIl9wcmVzIjp7IiRfX29yaWdpbmFsX3NhdmUiOltudWxsLG51bGxdfSwiX3Bvc3RzIjp7IiRfX29yaWdpbmFsX3NhdmUiOltdfSwiaWF0IjoxNDYzMDM5NjQ2fQ.k-Y_0ImO4LYh6Gpc_RR82zfDdMEy5PL4V-kuY2X4fwU';
 describe("For not logged users ",() =>{
 
     it("Just a simple home request ",(done) => {
@@ -21,7 +13,7 @@ describe("For not logged users ",() =>{
             .get("/")
             .end(function(err,res){
 
-                res.body.should.be.instanceOf(Array);
+                res.body.should.be.instanceOf(Object);
                 res.status.should.equal(200);
                 done();
             });
@@ -29,7 +21,7 @@ describe("For not logged users ",() =>{
 
     it("Request for getting single car info ",(done) => {
         server
-            .get("/cars/" + CAR)
+            .get("/cars/" + config.CAR)
             .end(function(err,res){
                 res.body.should.have.property('_id');
                 res.body.should.have.property('createdAt');
@@ -42,7 +34,7 @@ describe("For not logged users ",() =>{
 
     it("Request for getting FAKE car info ",(done) => {
         server
-            .get("/cars/" + FAKE_CAR)
+            .get("/cars/" + config.FAKE_CAR)
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.status.should.equal(404);
@@ -155,7 +147,7 @@ describe("For logged users with SIMPLE rules ",() =>{
         };
         server
             .post("/cart")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .send(body)
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
@@ -169,7 +161,7 @@ describe("For logged users with SIMPLE rules ",() =>{
     it("Request for  ADD item into basket WITHOUT stockId",(done) => {
         server
             .post("/cart")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'UserId,StockId required' });
@@ -180,8 +172,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request for  DELETE item from the basket",(done) => {
         server
-            .delete("/cart/" + ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .delete("/cart/" + config.ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .send({stockId : 1010})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
@@ -192,8 +184,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request for  DELETE item fake Order Id",(done) => {
         server
-            .delete("/cart/" + FAKE_ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .delete("/cart/" + config.FAKE_ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .send({stockId : 1010})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
@@ -206,8 +198,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request for  Update item amount in the  the basket",(done) => {
         server
-            .put("/cart/" + ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .put("/cart/" + config.ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .send({stockId : 1010 , amount : 10})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
@@ -219,8 +211,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request for  Update item in the  the basket without amount",(done) => {
         server
-            .put("/cart/" + ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .put("/cart/" + config.ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .send({stockId : 1010 })
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
@@ -232,8 +224,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request for view user own order",(done) => {
         server
-            .get("/cart/view/" + ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .get("/cart/view/" + config.ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.have.property('userId');
@@ -247,8 +239,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request for view user own order with fake ORDER_ID",(done) => {
         server
-            .get("/cart/view/" + FAKE_ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .get("/cart/view/" + config.FAKE_ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.status.should.equal(404);
@@ -261,8 +253,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request to confirming user order",(done) => {
         server
-            .post("/cart/confirm/" + ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .post("/cart/confirm/" + config.ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.have.length(24);
@@ -274,8 +266,8 @@ describe("For logged users with SIMPLE rules ",() =>{
 
     it("Request to confirming user order with FAKE ORDER_ID",(done) => {
         server
-            .get("/cart/confirm/" + FAKE_ORDER_ID)
-            .set({ 'x-access-token' : TOKEN})
+            .get("/cart/confirm/" + config.FAKE_ORDER_ID)
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.status.should.equal(404);
@@ -295,7 +287,7 @@ describe("For logged users with SIMPLE rules ",() =>{
     //    server
     //        .post("/cars/")
     //        .send(body)
-    //        .set({ 'x-access-token' : TOKEN})
+    //        .set({ 'x-access-token' : config.TOKEN})
     //        .end(function(err,res){
     //            res.body.should.be.instanceOf(Object);
     //            res.body.should.have.property('stockId');
@@ -316,7 +308,7 @@ describe("For logged users with SIMPLE rules ",() =>{
         server
             .post("/cars/")
             .send(body)
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.status.should.equal(404);
@@ -334,7 +326,7 @@ describe("For logged users with ADVANCED rules ",() =>{
         server
             .delete("/advanced/cars/")
             .send({ stockId: '202020'})
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.have.property('answer');
@@ -363,7 +355,7 @@ describe("For logged users with ADVANCED rules ",() =>{
         server
             .put("/advanced/cars/")
             .send({ stockId: '202023', color : 'GreatColor'})
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.have.property('_id');
@@ -392,7 +384,7 @@ describe("For logged users with ADVANCED rules ",() =>{
     it("Get list of all users cars",(done) => {
         server
             .get("/advanced/cars/")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Array);
                 res.status.should.equal(200);
@@ -414,8 +406,8 @@ describe("For logged users with ADVANCED rules ",() =>{
 
     it("Get list of a single  user car",(done) => {
         server
-            .get("/advanced/cars/" + CAR )
-            .set({ 'x-access-token' : TOKEN})
+            .get("/advanced/cars/" + config.CAR )
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.status.should.equal(200);
@@ -425,8 +417,8 @@ describe("For logged users with ADVANCED rules ",() =>{
 
     it("Get list of a single  user car, which is not been in the usersOwn list",(done) => {
         server
-            .get("/advanced/cars/" + FAKE_CAR )
-            .set({ 'x-access-token' : TOKEN})
+            .get("/advanced/cars/" + config.FAKE_CAR )
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'This car is not your' });
@@ -443,7 +435,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get list all users",(done) => {
         server
             .get("/admin/users")
-            .set({ 'x-access-token' : ADMIN_TOKEN})
+            .set({ 'x-access-token' : config.ADMIN_TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Array);
                 res.status.should.equal(200);
@@ -454,7 +446,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get list all users with the simple user token ",(done) => {
         server
             .get("/admin/users")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'Permission denied' });
@@ -466,8 +458,8 @@ describe("For logged users with ADMIN rules ",() =>{
 
     it("Get info of a single user ",(done) => {
         server
-            .get("/admin/users/" + USER_ID)
-            .set({ 'x-access-token' : ADMIN_TOKEN})
+            .get("/admin/users/" + config.USER_ID)
+            .set({ 'x-access-token' : config.ADMIN_TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.have.property('name');
@@ -483,8 +475,8 @@ describe("For logged users with ADMIN rules ",() =>{
 
     it("Get info of a single user with fake user Id ",(done) => {
         server
-            .get("/admin/users/" + FAKE_USER_ID)
-            .set({ 'x-access-token' : ADMIN_TOKEN})
+            .get("/admin/users/" + config.FAKE_USER_ID)
+            .set({ 'x-access-token' : config.ADMIN_TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'User not found' });
@@ -497,7 +489,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get list of top 5 sold cars",(done) => {
         server
             .get("/admin/topCars")
-            .set({ 'x-access-token' : ADMIN_TOKEN})
+            .set({ 'x-access-token' : config.ADMIN_TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Array).and.have.length(5);
                 res.status.should.equal(200);
@@ -509,7 +501,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get list of top 5 sold cars with the simple user token ",(done) => {
         server
             .get("/admin/topCars")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'Permission denied' });
@@ -522,7 +514,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get list of top 5 users",(done) => {
         server
             .get("/admin/topUsers")
-            .set({ 'x-access-token' : ADMIN_TOKEN})
+            .set({ 'x-access-token' : config.ADMIN_TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Array).and.have.length(5);
                 res.status.should.equal(200);
@@ -534,7 +526,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get list of top 5 users with the simple user token ",(done) => {
         server
             .get("/admin/topCars")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'Permission denied' });
@@ -547,7 +539,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get info about all last week orders",(done) => {
         server
             .get("/admin/lastOrders")
-            .set({ 'x-access-token' : ADMIN_TOKEN})
+            .set({ 'x-access-token' : config.ADMIN_TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Array).and.have.length(7);
                 res.status.should.equal(200);
@@ -559,7 +551,7 @@ describe("For logged users with ADMIN rules ",() =>{
     it("Get info about all last week orders with the simple user token ",(done) => {
         server
             .get("/admin/topCars")
-            .set({ 'x-access-token' : TOKEN})
+            .set({ 'x-access-token' : config.TOKEN})
             .end(function(err,res){
                 res.body.should.be.instanceOf(Object);
                 res.body.should.eql({ message: 'Permission denied' });
