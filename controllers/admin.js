@@ -25,7 +25,13 @@ module.exports = {
         }
         User.findOne({_id: userId}, (err, user) => {
             if (err) next(new Error(err));
-            res.json(user)
+            if (!user) {
+                let err = new Error('User not found');
+                err.statusCode = 404;
+                next(err);
+            } else {
+                res.json(user)
+            }
         })
 
     },

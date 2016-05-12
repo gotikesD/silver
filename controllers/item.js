@@ -98,7 +98,7 @@ module.exports = {
                     return data
                 })
                 .then(()=> {
-                    res.end('Deleted from cars DB and user DB')
+                    res.json({answer : 'Deleted from cars DB and user DB'})
                 })
                 .catch((err)=> {
                     next(new Error(err))
@@ -148,7 +148,13 @@ module.exports = {
 
         Cars.findOne({_id: carId })
             .then((data) => {
-                res.json(data)
+                if(!data) {
+                   let err = new Error('This car is not your');
+                   err.statusCode = 404;
+                   next(err)
+                } else {
+                    res.json(data)
+                }
             })
             .catch((err)=> {
                 next(new Error(err))

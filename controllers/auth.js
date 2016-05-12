@@ -69,10 +69,9 @@ module.exports = {
 
            User.findOne( {_id : userId })
                .then((data) => {
-                   if(!data || data.rules === 'Simple User') {
+                   if(!data || data.rules === 'Simple') {
                        let err = new Error('Permission denied');
                        err.statusCode = 403;
-
                        next(err)
                    } else {
                        next()
@@ -91,10 +90,8 @@ module.exports = {
         User.findOne({_id: userId})
             .then((data) => {
                 if (!data || data.rules != 'Admin') {
-
                     let err = new Error('Permission denied');
                     err.statusCode = 403;
-
                     next(err)
                 } else {
                     next()
@@ -108,13 +105,14 @@ module.exports = {
     checkOwnCar : (req,res,next) => {
         let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
         let userId = token._doc._id;
+
+
         let stockId = req.body.stockId;
-        User.findOne({_id: userId , ownCars : stockId  })
+        User.findOne({_id: userId})
             .then((data) => {
                if(!data) {
-                   let err = new Error('Permission denied');
+                   let err = new Error('Permission denied, car not Found');
                    err.statusCode = 403;
-
                    next(err)
                } else {
                    next()
@@ -127,7 +125,6 @@ module.exports = {
 
     cartRulesCheck : (req,res,next) => {
 
-        console.log(req.params)
         let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
         let userId = token._doc._id;
         let order = req.params.orderId || req.params.cartId;
