@@ -13,7 +13,7 @@ module.exports = {
             })
             .catch((err) => {
 
-                next(new Error(err))
+                next(err)
             })
     } ,
 
@@ -30,7 +30,7 @@ module.exports = {
                 }
             })
             .catch((err) => {
-                next(new Error(err))
+                next(err)
             })
     } ,
 
@@ -58,11 +58,11 @@ module.exports = {
                         let car = new Cars(current);
                         car.save()
                             .then((cur) => res.json(cur))
-                            .catch((err) => next(new Error(err)));
+                            .catch((err) => next(err));
                     }
                 })
                 .catch((err) => {
-                    next(new Error(err))
+                    next(err)
                 });
         }
 
@@ -93,7 +93,7 @@ module.exports = {
                              console.log(data)
                          })
                         .catch((err)=> {
-                            next(new Error(err))
+                            next(err)
                         });
                     return data
                 })
@@ -101,7 +101,7 @@ module.exports = {
                     res.json({answer : 'Deleted from cars DB and user DB'})
                 })
                 .catch((err)=> {
-                    next(new Error(err))
+                    next(err)
                 })
         }
 
@@ -126,7 +126,7 @@ module.exports = {
                     res.json(data)
                 })
                 .catch((err)=> {
-                    next(new Error(err))
+                    next(err)
                 })
         }
     } ,
@@ -139,7 +139,7 @@ module.exports = {
                 res.json(data)
             })
             .catch((err)=> {
-                next(new Error(err))
+                next(err)
             })
     },
 
@@ -157,7 +157,7 @@ module.exports = {
                 }
             })
             .catch((err)=> {
-                next(new Error(err))
+                next(err)
             })
     }
 
