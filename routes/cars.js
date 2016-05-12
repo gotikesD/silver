@@ -4,19 +4,19 @@ const router = express.Router();
 
 
 const controller = require('../controllers/item');
-const { checkRules , checkOwnCar , checkUserStatus } = require('../controllers/auth');
+const authController = require('../controllers/auth');
 
 router.get('/', controller.getAll);
 router.get('/cars/:id', controller.getSingle);
-router.post('/cars' ,checkUserStatus, controller.addNew);
+router.post('/cars' ,authController.checkUserStatus, controller.addNew);
 
 // available only  to the advanced user
 
-router.delete('/advanced/cars',checkUserStatus, checkRules , checkOwnCar , controller.deleteCar);
-router.put('/advanced/cars',checkUserStatus, checkRules , checkOwnCar, controller.updateCar);
+router.delete('/advanced/cars',authController.checkUserStatus, authController.checkRules , authController.checkOwnCar , controller.deleteCar);
+router.put('/advanced/cars',authController.checkUserStatus, authController.checkRules , authController.checkOwnCar, controller.updateCar);
 
-router.get('/advanced/cars/',checkUserStatus, checkRules , controller.viewAllUserCars);
-router.get('/advanced/cars/:carId',checkUserStatus, checkRules , controller.viewSingleUserCar);
+router.get('/advanced/cars/',authController.checkUserStatus, authController.checkRules , controller.viewAllUserCars);
+router.get('/advanced/cars/:carId',authController.checkUserStatus, authController.checkRules , controller.viewSingleUserCar);
 
 
 module.exports = router;
