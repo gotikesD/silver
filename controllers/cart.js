@@ -28,7 +28,7 @@ module.exports = {
                         order.items.push({stockId : stockId });
                         order.userId = userId;
                         order.save( (err)=> {
-                            if(err) next(new Error(err))
+                            if(err) next(err)
                         });
                         res.json(order._id)
                     } else {
@@ -59,7 +59,7 @@ module.exports = {
                     res.json(temp._id)
                 })
                 .catch((err) => {
-                    next(new Error(err))
+                    next(err)
                 })
         }
     },
@@ -83,7 +83,7 @@ module.exports = {
                     res.send('Modifed ' + answer.nModified +' items')
                 })
                 .catch((err) => {
-                    next(new Error(err))
+                    next(err)
                 })
         }
 
@@ -102,7 +102,7 @@ module.exports = {
                     res.json(data)
                 })
                 .catch((err) => {
-                    next(new Error(err))
+                    next(err)
                 })
         }
     },
@@ -135,7 +135,7 @@ module.exports = {
                             });
                         })
                         .catch((err) => {
-                            next(new Error(err))
+                            next(err)
                         });
                     return data;
                 })
@@ -148,12 +148,12 @@ module.exports = {
                             res.json(order._id)
                         })
                         .catch((err) => {
-                            next(new Error(err))
+                            next(err)
                         })
 
                 })
                 .catch((err) => {
-                    next(new Error(err))
+                    next(err)
                 })
         }
     }
