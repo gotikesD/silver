@@ -23,6 +23,7 @@
     "mongoose": "^4.4.14",
     "mongoose-beautiful-unique-validation": "^3.0.0",
     "mongoose-currency": "^0.2.0",
+    "nodemailer": "^2.4.1",
     "sha256": "^0.2.0",
     "should": "^8.3.1",
     "supertest": "^1.2.0",

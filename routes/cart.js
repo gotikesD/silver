@@ -14,7 +14,6 @@ router.get('/view/:cartId',authController.checkUserStatus ,authController.cartRu
 router.post('/confirm/:cartId',authController.checkUserStatus ,authController.cartRulesCheck , controller.confirmOrder);
 
 
-
 module.exports = router;
 
 /**

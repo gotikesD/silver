@@ -4,6 +4,7 @@ const Orders = require('../models/order');
 const Cars = require('../models/carsItem');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 module.exports = {
 
@@ -110,7 +111,6 @@ module.exports = {
     confirmOrder : (req,res,next) => {
 
         let cartId = req.params.cartId;
-
         if(!cartId) {
             let err = new Error('OrderID required');
             err.statusCode = 404;
@@ -145,7 +145,25 @@ module.exports = {
                         .then((user) => {
                             user.sendOrders += 1;
                             user.save();
-                            res.json(order._id)
+                            return user
+                        })
+                        .then((userInfo) => {
+                            let transporter = nodemailer.createTransport();
+                            var mailData = {
+                                from: 'silverCars@mail.com',
+                                to: userInfo.email,
+                                subject: 'Here is your order',
+                                text: 'Plaintext version of the message',
+                                html: '<div><h2>Hello ' + userInfo.name + ' ' + userInfo.surName +'</h2><br/>' +
+                                      '<mark>Hello from silver cars</mark>'+'<div>'+ 'You order Id Is' + order._id +'</div></div>'
+                            };
+                            transporter.sendMail(mailData, (err) => {
+                                next(err)
+                            });
+                            return order._id
+                        })
+                        .then((orderID) => {
+                            res.json(orderID)
                         })
                         .catch((err) => {
                             next(err)

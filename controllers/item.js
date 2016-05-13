@@ -3,7 +3,7 @@ const Cars = require('../models/carsItem');
 const mongoose = require('mongoose');
 const Users = require('../models/user');
 const jwt = require('jsonwebtoken');
-const JSONStream = require('JSONStream')
+const JSONStream = require('JSONStream');
 
 module.exports = {
     getAll : (req,res,next) => {
@@ -22,6 +22,7 @@ module.exports = {
                     err.statusCode = 404;
                     next(err);
                 } else {
+
                     res.json(data)
                 }
             })

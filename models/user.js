@@ -30,14 +30,7 @@ let userSchema = new Schema({
     email: {
         type: String,
         isRequired: true,
-        unique: true,
-        validate: {
-            validator: function (v) {
-                let check = /^[\w\d]*[^@]@\w{2,10}.\w{2,3}$/i;
-                return v.match(check);
-            },
-            message: 'Invalid email'
-        }
+        unique: true
     },
     password: {
         type: String,
