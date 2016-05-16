@@ -32,7 +32,7 @@ fs.createReadStream('../data/initialData.csv')
                                      current.transmissionType = 'Manual';
 
         current.entryData = data['Entry Da'];
-        current.cost = data.Cost;
+        current.cost = data.Cost.split('.')[0].slice(-2) ;
 
         let item = new CarItem(current);
 
