@@ -1,20 +1,20 @@
 @font-face {
     font-family: 'MagistralC-Bold';
-    src: url('./fonts/MagistralC-Bold.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/MagistralC-Bold.woff') format('woff'),
-    url('./fonts/MagistralC-Bold.ttf') format('truetype'),
-    url('./fonts/MagistralC-Bold.svg#MagistralC-Bold') format('svg');
+    src: url('../fonts/MagistralC-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/MagistralC-Bold.woff') format('woff'),
+    url('../fonts/MagistralC-Bold.ttf') format('truetype'),
+    url('../fonts/MagistralC-Bold.svg#MagistralC-Bold') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'MagistralC';
-    src: url('./fonts/MagistralC.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/MagistralC.otf') format('opentype'),
-    url('./fonts/MagistralC.woff') format('woff'),
-    url('./fonts/MagistralC.ttf') format('truetype'),
-    url('./fonts/MagistralC.svg#MagistralC') format('svg');
+    src: url('../fonts/MagistralC.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/MagistralC.otf') format('opentype'),
+    url('../fonts/MagistralC.woff') format('woff'),
+    url('../fonts/MagistralC.ttf') format('truetype'),
+    url('../fonts/MagistralC.svg#MagistralC') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -24,7 +24,7 @@ body {
     color: orangered;
     min-width: 400px;
     font: 18px/20px MagistralC, Arial, sans-serif;
-    background: url("background.jpg");
+    background: url("../img/background.jpg");
 }
 /* General reset */
 a,a:hover,a:focus {
@@ -76,7 +76,7 @@ a{text-decoration: none;}
 .logo {
     font-size: 0 !important;
     display: block;
-    background: url("./logo.png") no-repeat;
+    background: url("../img/logo.png") no-repeat;
     width: 50px;
     height: 45px;
     background-size: contain;
@@ -100,9 +100,10 @@ header .dropdown-menu a:hover {
 .login {
     width: 100% !important;
 }
-.navbar-form>.form-group {
+.navbar-form .form-group {
     width: 20%;
 }
+
 .form-group input {
     cursor: pointer;
     border: none!important;
@@ -184,6 +185,7 @@ aside ul li a:hover {
     transform: scaleX(1.2);
 }
 .content {
+    min-height: 800px;
     padding-top: 50px;
 }
  .item-info div {
@@ -256,7 +258,7 @@ footer .silver-rights span {
     font-size: 0;
     width: 53px;
     height: 51px;
-    background: url(sprites.png) no-repeat;
+    background: url(../img/sprites.png) no-repeat;
 }
 .footer-sprites ul li a.dribble {
     background-position: -53px 0;

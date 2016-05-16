@@ -1,0 +1,25 @@
+table td,
+th {
+    width: 22%;
+}
+tr {
+    height: 50px;
+}
+
+.cart {
+    margin-bottom: 100px;
+}
+.confirm {
+    display: block;
+    margin: 0 auto;
+    width: 20%;
+    padding: 10px;
+    border-radius: 5px;
+    background: orangered;
+    color: black;
+    border: none;
+}
+td input {
+    width: 30%;
+    float: left;
+}

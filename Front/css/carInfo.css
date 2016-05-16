@@ -1,0 +1,51 @@
+.itemDetail {
+    overflow: hidden;
+    padding: 20px 0 0 20px;
+}
+.itemDetail>div {
+
+}
+table {
+    margin-bottom: 100px;
+}
+
+table th {
+    padding: 5px;
+}
+table td {
+    padding: 10px;
+}
+.price {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    overflow: hidden;
+    padding: 20px;
+    border: 1px solid orangered;
+    border-radius: 5px;
+    margin-bottom: 100px;
+}
+.price>div {
+    float: left;
+}
+.addToOrder {
+    overflow: hidden;
+    text-align: center;
+}
+
+.addToOrder .add {
+    background: black;
+    margin-right: 20px ;
+    text-transform: uppercase;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+.addToOrder input {
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+.addToOrder a {
+    font-weight: bold;
+}
