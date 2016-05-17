@@ -5,6 +5,10 @@ import { connect } from 'react-redux'
 
 class TopCarsComponent extends Component {
 
+    componentWillMount() {
+        this.props.pageActions.getTop()
+    }
+
     render() {
         const { topCars } = this.props.cars;
         let top = topCars.map((i)=> {
