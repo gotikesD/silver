@@ -9,11 +9,9 @@ import { connect } from 'react-redux'
 
 class MainContainer extends Component {
     render() {
-
-        const { getTop } = this.props.pageActions
         return (
             <div className="container">
-                <HeaderComponent getTop={getTop} />
+                <HeaderComponent/>
                 <main>
                     <SidebarComponent />
                     <div className="content col-lg-9 col-md-9 col-sm-9 col-xs-11">
@@ -26,6 +24,12 @@ class MainContainer extends Component {
     }
 }
 
+function mapStateToProps (state) {
+    return {
+        cars: state.mainPage,
+        user : state.users
+    }
+}
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -34,4 +38,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(  mapDispatchToProps)(MainContainer)
+export default connect(mapStateToProps , mapDispatchToProps)(MainContainer)

@@ -8,6 +8,7 @@ import { Link } from 'react-router';
 class HomeContent extends Component {
 
     componentWillMount() {
+        this.props.pageActions.getTop()
         this.props.pageActions.getAllCars()
     }
 
