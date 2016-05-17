@@ -25,7 +25,6 @@ function getSingleCar(car) {
 }
 
 export  function getSingle(id) {
-    console.log(id +'I AM HERE')
     return dispatch => {
         api.getSingleProduct(id,
             car => {

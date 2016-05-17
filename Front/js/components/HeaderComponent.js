@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import * as pageActions from '../actions/index'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import { Link } from 'react-router';
 
 
@@ -23,7 +20,7 @@ class HeaderComponent extends Component {
 
                     <div className="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav ">
-                            <li className="active"><a href="#">Main <span className="sr-only">(current)</span></a></li>
+                            <li className="active"><Link to="/">Main <span className="sr-only">(current)</span></Link></li>
                             <li><Link to="/cars/top" >Top Cars</Link></li>
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span className="caret"></span></a>
