@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+import * as pageActions from '../actions/index'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { Link } from 'react-router';
+
 
 class HeaderComponent extends Component {
+
+    topCars() {
+       this.props.getTop()
+    }
+
     render() {
         return (
             <header>
@@ -18,7 +28,7 @@ class HeaderComponent extends Component {
                     <div className="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav ">
                             <li className="active"><a href="#">Main <span className="sr-only">(current)</span></a></li>
-                            <li><a href="#">Top Cars</a></li>
+                            <li onClick={this.topCars.bind(this)}><a href="#">Top Cars</a></li>
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span className="caret"></span></a>
                                 <ul className="dropdown-menu">
@@ -81,5 +91,5 @@ class HeaderComponent extends Component {
     }
 }
 
-export default HeaderComponent;
+export default HeaderComponent
 

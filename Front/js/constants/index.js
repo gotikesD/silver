@@ -1,3 +1,5 @@
 module.exports = {
-    SET_YEAR : 'SET_YEAR'
+    GET_ALL_GARS : 'GET_ALL_GARS',
+    GET_SINGLE_CAR : 'GET_SINGLE_CAR',
+    GET_TOP_CARS : 'GET_TOP_CARS'
 };

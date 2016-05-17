@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('./cart');
-const authController = require('./auth');
+const controller = require('../controllers/cart');
+const authController = require('../controllers/auth');
 
 router.post('/', authController.checkUserStatus , controller.addToOrder);
 

@@ -1,8 +1,8 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
-const controller = require('./auth');
-const validation = require('./validation');
+const controller = require('../controllers/auth');
+const validation = require('../controllers/validation');
 
 router.post('/login',validation.loginValidation, controller.loginPost);
 

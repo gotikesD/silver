@@ -9,6 +9,7 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const statusError  = require('express-status-error');
+const cors = require('cors');
 
 mongoose.connect(config.database);
 
@@ -22,10 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(statusError({debug:true}));
 
-app.use('/', cars);
-app.use('/auth', auth);
-app.use('/cart' , cart);
-app.use('/admin' , admin);
+app.use('/', cors(), cars);
+app.use('/auth',cors(),auth);
+app.use('/cart' ,cors(),cart);
+app.use('/admin' ,cors(), admin);
 
 
 if (app.get('env') === 'development') {
@@ -44,5 +45,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
+console.log('App run on ' + config.port)
 app.listen(config.port);

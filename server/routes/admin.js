@@ -2,8 +2,8 @@
 const express = require('express');
 const router = express.Router();
 
-const controller = require('./admin');
-const authController = require('./auth');
+const controller = require('../controllers/admin');
+const authController = require('../controllers/auth');
 
 router.get('/users/',authController.checkUserStatus, authController.adminCheck, controller.getAllUsers);
 

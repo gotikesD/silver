@@ -3,11 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 
-const controller = require('./item');
-const authController = require('./auth');
+const controller = require('../controllers/item');
+const authController = require('../controllers/auth');
 
 router.get('/', controller.getAll);
 router.get('/cars/:id', controller.getSingle);
+router.get('/cars/top', controller.viewTopCars);
 router.post('/cars' ,authController.checkUserStatus, controller.addNew);
 
 // available only  to the advanced user

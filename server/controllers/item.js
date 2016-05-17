@@ -7,12 +7,28 @@ const JSONStream = require('JSONStream');
 
 module.exports = {
     getAll : (req,res,next) => {
-        Cars.find({}, {_id : 1, retailPrice: 1, color : 1, model : 1})
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('withCredentials', true);
+        Cars.find({}, {_id : 1, cost: 1, color : 1, model : 1})
             .stream()
             .pipe(JSONStream.stringify())
             .pipe(res);
+
     } ,
 
+    viewTopCars: (req, res, next) => {
+        Cars.find()
+            .sort({bought: -1})
+            .limit(5)
+            .then((data) => {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('withCredentials', true);
+                res.json(data)
+            })
+            .catch((err)=> {
+                next(new Error(err))
+            })
+    },
     getSingle : (req,res,next) => {
         let queryId = req.params.id;
         Cars.findOne({_id : queryId})
@@ -22,7 +38,8 @@ module.exports = {
                     err.statusCode = 404;
                     next(err);
                 } else {
-
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.setHeader('withCredentials', true);
                     res.json(data)
                 }
             })

@@ -275,3 +275,7 @@ footer .silver-rights span {
 .footer-sprites ul li a.share {
     background-position: -265px 0;
 }
+table {
+    width: 100%;
+    margin-bottom: 100px;
+}

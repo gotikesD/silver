@@ -1,8 +1,6 @@
 'use strict';
 const initialState = {
-    name: 'Василий',
-    surname: 'Реактов',
-    age: 27
+    user : {name : '123'}
 };
 
 export default function userstate(state = initialState) {
