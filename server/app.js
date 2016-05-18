@@ -9,7 +9,6 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const statusError  = require('express-status-error');
-const cors = require('cors');
 
 mongoose.connect(config.database);
 
@@ -22,11 +21,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(statusError({debug:true}));
-
-app.use('/', cors(), cars);
-app.use('/auth',cors(),auth);
-app.use('/cart' ,cors(),cart);
-app.use('/admin' ,cors(), admin);
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+app.use('/', cars);
+app.use('/auth',auth);
+app.use('/cart' ,cart);
+app.use('/admin' , admin);
 
 
 if (app.get('env') === 'development') {
@@ -45,5 +48,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-console.log('App run on ' + config.port)
+console.log('App runs on ' + config.port)
 app.listen(config.port);

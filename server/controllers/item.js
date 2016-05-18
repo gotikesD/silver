@@ -17,6 +17,7 @@ module.exports = {
     } ,
 
     viewTopCars: (req, res, next) => {
+
         Cars.find()
             .sort({bought: -1})
             .limit(5)
