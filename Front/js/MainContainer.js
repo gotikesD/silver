@@ -10,7 +10,6 @@ import { connect } from 'react-redux'
 class MainContainer extends Component {
 
     render() {
-        console.log(this.props.cars)
         return (
             <div className="container">
                 <HeaderComponent/>

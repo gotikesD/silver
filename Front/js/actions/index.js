@@ -1,4 +1,4 @@
-import { GET_ALL_GARS , GET_SINGLE_CAR  , GET_TOP_CARS} from '../constants/'
+import { GET_ALL_GARS , GET_SINGLE_CAR  , GET_TOP_CARS, LOGIN , LOGOUT} from '../constants/'
 import api from '../api/index';
 
 function getAll(cars) {
@@ -46,5 +46,19 @@ export  function getTop() {
             topCars => {
                 dispatch(getTopCars(topCars))
             })
+    }
+}
+
+export function Authorize() {
+       return {
+            type: LOGIN,
+            payload: true
+        }
+}
+
+export function logout() {
+    return {
+        type: LOGOUT,
+        payload: false
     }
 }

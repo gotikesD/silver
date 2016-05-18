@@ -1,11 +1,12 @@
 'use strict';
 
-import  { GET_ALL_GARS , GET_SINGLE_CAR , GET_TOP_CARS } from '../constants/';
+import  { GET_ALL_GARS , GET_SINGLE_CAR , GET_TOP_CARS , LOGIN , LOGOUT} from '../constants/';
 
 const initialState = {
     cars : [],
     singleCar : {},
-    topCars : []
+    topCars : [],
+    isAuthorized : false
 };
 
 export default function userstate(state = initialState,action) {
@@ -26,8 +27,16 @@ export default function userstate(state = initialState,action) {
             return  Object.assign({}, state, {
                 topCars: action.payload
             });
-            break;
 
+        case LOGIN:
+            return  Object.assign({}, state, {
+                isAuthorized: action.payload
+            });
+
+        case LOGOUT:
+            return  Object.assign({}, state, {
+                isAuthorized: action.payload
+            });
 
         default:
             return state;

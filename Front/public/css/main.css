@@ -121,6 +121,13 @@ header .dropdown-menu a:hover {
     border: none;
     background: black;
 }
+.userLogged .header-btn {
+    margin-top: 10px;
+    color: orangered !important;
+    transition: all linear 0.4s !important;
+    border: none;
+    background: black;
+}
 input:focus {
     border: none;
 }
@@ -278,4 +285,9 @@ footer .silver-rights span {
 table {
     width: 100%;
     margin-bottom: 100px;
+}
+.loggedEmail {
+    position: absolute;
+    top:12px;
+    left: 60%
 }

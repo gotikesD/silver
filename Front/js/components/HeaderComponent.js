@@ -1,10 +1,58 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
+import api from '../api/'
+import * as pageActions from '../actions/index'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+var jwtDecode = require('jwt-decode');
 
 class HeaderComponent extends Component {
 
+    componentWillMount() {
+        let token = localStorage.getItem('token')
+        if(token) {
+            this.props.pageActions.Authorize();
+        }
+    }
+
+    signHandle() {
+        api.signUpUser(this.refs.name.value,
+                       this.refs.secondName.value,
+                       this.refs.email.value,
+                       this.refs.password.value,
+                       this.refs.DOB.value);
+
+        this.refs.name.value='';
+        this.refs.secondName.value='';
+        this.refs.email.value='';
+        this.refs.password.value='';
+        this.refs.DOB.value='';
+    }
+
+    loginHandle() {
+        api.login(this.refs.emailL.value,
+                  this.refs.passwordL.value, (answer) => {
+
+                let token = localStorage.setItem("token", answer);
+                this.props.pageActions.Authorize();
+                this.refs.emailL.value='';
+                this.refs.passwordL.value='';
+            })
+    }
+
+    logoutHandle() {
+        localStorage.removeItem("token");
+        this.props.pageActions.logout();
+        console.log(this.props.isAuthorized)
+    }
+
     render() {
+        let token = localStorage.getItem('token')
+        if(token) {
+          let user = jwtDecode(token)
+          var email = user._doc.email
+        }
+
         return (
             <header>
                 <nav className="navbar navbar-inverse">
@@ -32,14 +80,19 @@ class HeaderComponent extends Component {
                                 </ul>
                             </li>
                         </ul>
-                        <form className="navbar-form navbar-right ">
+                        <div className="userLogged" style={this.props.isAuthorized ? {'display': 'block'} : {'display': 'none'} }>
+                            <div className="loggedEmail">You logged as {email}</div>
+                            <button type="button" className="btn btn-default header-btn pull-right">Cart</button>
+                            <button onClick={this.logoutHandle.bind(this)} type="button" className="btn btn-default header-btn pull-right">Logout</button>
+                        </div>
+                        <form className="navbar-form navbar-right " style={this.props.isAuthorized ? {'display': 'none'} : {'display': 'block'}}>
                             <div className="form-group form-group">
-                                <input type="email" className="form-control login" placeholder="Email" />
+                                <input type="email" className="form-control login" placeholder="Email" ref="emailL"/>
                             </div>
                             <div className="form-group form-group">
-                                <input type="password" className="form-control login" placeholder="Password" />
+                                <input type="password" className="form-control login" placeholder="Password" ref="passwordL"/>
                             </div>
-                            <button type="submit" className="btn btn-default header-btn">Login</button>
+                            <button type="button" className="btn btn-default header-btn" onClick={this.loginHandle.bind(this)}>Login</button>
                             <span className="or"> or </span>
                             <button type="button" className="btn btn-default header-btn" data-toggle="modal" data-target="#registerModal">Register</button>
                         </form>
@@ -55,24 +108,24 @@ class HeaderComponent extends Component {
                                     </div>
                                     <div className="modal-body">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="* Name" />
+                                            <input type="text" className="form-control" placeholder="* Name" ref="name"/>
                                         </div>
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="* Second Name" />
+                                            <input type="text" className="form-control" placeholder="* Second Name" ref="secondName"/>
                                         </div>
                                         <div className="form-group">
-                                            <input type="email" className="form-control" placeholder="* Email" />
+                                            <input type="email" className="form-control" placeholder="* Email" ref="email"/>
                                         </div>
                                         <div className="form-group">
-                                            <input type="password" className="form-control" placeholder="* Password" />
+                                            <input type="password" className="form-control" placeholder="* Password" ref="password"/>
                                         </div>
                                         <div className="form-group">
-                                            <input type="date" className="form-control" placeholder="Date of your birth" />
+                                            <input type="date" className="form-control" placeholder="Date of your birth" ref="DOB" />
                                         </div>
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn modal-btn" data-dismiss="modal">Close</button>
-                                        <button type="submit" className="btn modal-btn" data-dismiss="modal">Sing Up</button>
+                                        <button  type="button"  onClick={this.signHandle.bind(this)} className="btn modal-btn" data-dismiss="modal">Sing Up</button>
                                     </div>
                                 </div>
                             </div>
@@ -84,5 +137,18 @@ class HeaderComponent extends Component {
     }
 }
 
-export default HeaderComponent
+function mapStateToProps (state) {
+    return {
+        isAuthorized: state.mainPage.isAuthorized,
+        cars : state.mainPage.cars
+    }
+}
 
+function mapDispatchToProps(dispatch) {
+    return {
+        pageActions: bindActionCreators(pageActions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps , mapDispatchToProps)(HeaderComponent)

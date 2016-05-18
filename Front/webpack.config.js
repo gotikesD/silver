@@ -21,7 +21,7 @@ var config = {
         }]
     },
     devServer: {
-        contentBase:  __dirname +"/public",
+        contentBase: "./public",
         colors: true,
         historyApiFallback: true,
         inline: true
