@@ -9,6 +9,7 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const statusError  = require('express-status-error');
+const bluebird = require('bluebird')
 
 mongoose.connect(config.database);
 
@@ -23,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(statusError({debug:true}));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, x-access-token , Content-Type, Accept");
     next();
 });
 app.use('/', cars);

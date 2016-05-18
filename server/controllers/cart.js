@@ -6,6 +6,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
+
 module.exports = {
 
     addToOrder: (req, res, next) => {
@@ -13,13 +14,37 @@ module.exports = {
        let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
        let userId = token._doc._id;
 
+
        let stockId = req.body.stockId;
+       let orderId = req.body.orderId;
 
         if( !userId || !stockId ) {
             let err = new Error('UserId,StockId required');
             err.statusCode = 404;
             next(err);
-        } else {
+        } else if(orderId) {
+            Orders.findOneAndUpdate({
+                    orderId : orderId },
+                {$push : { items : { stockId : stockId }  }})
+                .then((temp) => {
+                    if(!temp) {
+                        let order = new Orders();
+                        order.items.push({stockId : stockId });
+                        order.userId = userId;
+                        order.save( (err)=> {
+                            if(err) next(err)
+                        });
+                        res.json(order._id)
+                    } else {
+                        res.json(temp._id)
+                    }
+
+                })
+                .catch((err) => {
+                    next(new Error(err))
+                })
+        }
+        else {
             Orders.findOneAndUpdate({
                     userId : userId },
                 {$push : { items : { stockId : stockId }  }})
@@ -100,7 +125,15 @@ module.exports = {
         } else {
             Orders.findOne({_id : cartId})
                 .then((data) => {
-                    res.json(data)
+                 data.items.map((i)=> {
+                        Cars.findOne({stockId : i.stockId}, {stockId : 1,model : 1, make : 1, cost : 1})
+                            .then((car)=> {
+                                //!!!
+                            })
+                            .catch((err) => {
+                                next(err)
+                            })
+                    });
                 })
                 .catch((err) => {
                     next(err)
