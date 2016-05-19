@@ -291,3 +291,23 @@ table {
     top:12px;
     left: 60%
 }
+#signSuccess {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    background: black;
+    left: 38%;
+    top: 102%;
+    padding: 20px;
+    z-index: 100;
+    opacity: 0;
+    transition: all linear 0.5s;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#signSuccess div {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}

@@ -20,7 +20,15 @@ class HeaderComponent extends Component {
                        this.refs.secondName.value,
                        this.refs.email.value,
                        this.refs.password.value,
-                       this.refs.DOB.value);
+                       this.refs.DOB.value, (data) => {
+                if(data) {
+
+                    $('#signSuccess').css("opacity", "1");
+                    setTimeout(() => {
+                        $('#signSuccess').css("opacity", "0")
+                    },2000)
+                }
+            });
 
         this.refs.name.value='';
         this.refs.secondName.value='';
@@ -41,15 +49,20 @@ class HeaderComponent extends Component {
     }
 
     logoutHandle() {
-        localStorage.removeItem("token");
+        window.localStorage.clear();
         this.props.pageActions.logout();
-        console.log(this.props.isAuthorized)
+    }
+
+    viewCart() {
+        let token = localStorage.getItem('token');
+        let orderId = localStorage.getItem('orderId');
+        this.props.pageActions.getCart(token,orderId);
     }
 
     render() {
-        let token = localStorage.getItem('token')
+        let token = localStorage.getItem('token');
         if(token) {
-          let user = jwtDecode(token)
+          let user = jwtDecode(token);
           var email = user._doc.email
         }
 
@@ -82,8 +95,12 @@ class HeaderComponent extends Component {
                         </ul>
                         <div className="userLogged" style={this.props.isAuthorized ? {'display': 'block'} : {'display': 'none'} }>
                             <div className="loggedEmail">You logged as {email}</div>
-                            <button type="button" className="btn btn-default header-btn pull-right">Cart</button>
-                            <button onClick={this.logoutHandle.bind(this)} type="button" className="btn btn-default header-btn pull-right">Logout</button>
+                            <button type="button" className="btn btn-default header-btn pull-right" onClick={this.viewCart.bind(this)}>
+                                <Link to="cart/">Cart</Link>
+                            </button>
+                            <button onClick={this.logoutHandle.bind(this)} type="button" className="btn btn-default header-btn pull-right">
+                                <Link to="/">Logout</Link>
+                            </button>
                         </div>
                         <form className="navbar-form navbar-right " style={this.props.isAuthorized ? {'display': 'none'} : {'display': 'block'}}>
                             <div className="form-group form-group">
@@ -129,6 +146,10 @@ class HeaderComponent extends Component {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div id="signSuccess">
+                            <div>You successfully sing up!</div>
+                            <div>Now you need login</div>
                         </div>
                     </div>
                 </nav>

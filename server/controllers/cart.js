@@ -117,6 +117,7 @@ module.exports = {
 
     viewOrder : (req,res,next) => {
 
+
         let cartId = req.params.cartId;
         if(!cartId) {
             let err = new Error('OrderID required');
@@ -125,15 +126,21 @@ module.exports = {
         } else {
             Orders.findOne({_id : cartId})
                 .then((data) => {
-                 data.items.map((i)=> {
-                        Cars.findOne({stockId : i.stockId}, {stockId : 1,model : 1, make : 1, cost : 1})
-                            .then((car)=> {
-                                //!!!
-                            })
-                            .catch((err) => {
-                                next(err)
-                            })
+                    let carsId = data.items.map((i) => {
+                        return i.stockId
                     });
+                    Cars.find({stockId : {$in: carsId } })
+                        .then((cars)=> {
+                            let copy = Object.assign({}, data._doc)
+                           copy['carInfo'] = cars;
+                           return copy
+                        })
+                        .then((complete) => {
+                          res.json(complete)
+                        })
+                        .catch((err) => {
+                            next(err)
+                        })
                 })
                 .catch((err) => {
                     next(err)

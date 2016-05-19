@@ -5,11 +5,13 @@ import App from '../MainContainer';
 import HomeContent from '../components/HomeContent';
 import ItemInfoComponent from '../components/ItemInfoComponent';
 import TopCarsComponent from '../components/TopCarsComponent';
+import CartComponent from '../components/CartComponent';
 
 export default (
     <div>
         <Route path="/" component={App} >
             <IndexRoute component={HomeContent} />
+            <Route path='/cart/' component={CartComponent} />
             <Route path='/cars/top' component={TopCarsComponent} />
             <Route path='/cars/:id' component={ItemInfoComponent} />
         </Route>

@@ -1,7 +1,9 @@
+import * as pageActions from '../actions/index'
 const API_HEADERS = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 };
+
 
 export default  {
     getProducts(callback) {
@@ -55,7 +57,7 @@ export default  {
             });
     },
 
-    signUpUser(name,surName,email,password,dateOfBirth) {
+    signUpUser(name,surName,email,password,dateOfBirth, callback) {
 
         let requestBody = {
             name : name,
@@ -75,11 +77,11 @@ export default  {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error("Server response wasn't OK");
+                    alert('Wrong data')
                 }
             })
             .then((responseData) => {
-                console.log(responseData)
+                callback(responseData)
             })
             .catch((error) => {
                 throw error;
@@ -103,7 +105,7 @@ export default  {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error("Server response wasn't OK");
+                    alert('Wrong data')
                 }
             })
             .then((responseData) => {
@@ -112,5 +114,60 @@ export default  {
             .catch((error) => {
                 throw error;
             });
-    }
+    } ,
+
+    addToCart(stockId,token,callback) {
+        let requestBody = {
+            stockId: stockId
+        };
+
+        fetch('http://localhost:3000/cart', {
+            method: 'post',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    },
+
+    viewCart(token,orderId,callback) {
+
+        fetch('http://localhost:3000/cart/view/'+ orderId, {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    },
+
 }

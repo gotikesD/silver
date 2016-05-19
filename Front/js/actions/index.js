@@ -1,4 +1,4 @@
-import { GET_ALL_GARS , GET_SINGLE_CAR  , GET_TOP_CARS, LOGIN , LOGOUT} from '../constants/'
+import { GET_ALL_GARS , GET_SINGLE_CAR  , GET_TOP_CARS, LOGIN , LOGOUT , GET_YOUR_CART} from '../constants/'
 import api from '../api/index';
 
 function getAll(cars) {
@@ -60,5 +60,21 @@ export function logout() {
     return {
         type: LOGOUT,
         payload: false
+    }
+}
+
+function viewCart(cartContent) {
+    return {
+        type: GET_YOUR_CART,
+        payload: cartContent
+    }
+}
+
+export  function getCart(orderId, token) {
+    return dispatch => {
+        api.viewCart( orderId, token,
+            cartContent => {
+                dispatch(viewCart(cartContent))
+            })
     }
 }
