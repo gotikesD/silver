@@ -98,6 +98,9 @@ class HeaderComponent extends Component {
                             <button type="button" className="btn btn-default header-btn pull-right" onClick={this.viewCart.bind(this)}>
                                 <Link to="/cart/">Cart</Link>
                             </button>
+                            <button type="button" className="btn btn-default header-btn pull-right">
+                                <Link to="/profile/">Profile</Link>
+                            </button>
                             <button onClick={this.logoutHandle.bind(this)} type="button" className="btn btn-default header-btn pull-right">
                                 <Link to="/">Logout</Link>
                             </button>

@@ -64,7 +64,7 @@
 # Type - post
 # Requirements - req.headers : x-access-token
 # Requirements - req.body : stockId
-# Not necessary - req.body : color,year,mileage,carState,transmissionType,entryDate,cost,dealerId,internationalPrice,askPrice,retailPrice
+# Not necessary - req.body : color,year,mileage,carState,transmissionType,entryDate,cost,dealerId
 # Success return -Object(Created Car Full Info) and change current user status from SIMPLE to ADVANCED 
 
 
