@@ -101,12 +101,13 @@ module.exports = {
             err.statusCode = 404;
             next(err);
         } else {
-            Orders.update({
+            Orders.findOneAndUpdate({
                     _id : orderId, 'items.stockId' : stockId },
-                {'items.$.amount' : amount}
+                {'items.$.amount' : amount},
+                {new : true}
                 )
                 .then((answer) => {
-                    res.send('Modifed ' + answer.nModified +' items')
+                    res.send(answer._id)
                 })
                 .catch((err) => {
                     next(err)
@@ -156,8 +157,17 @@ module.exports = {
             err.statusCode = 404;
             next(err);
         } else {
-            Orders.findOneAndUpdate({_id : cartId}, {status : 'complete'} , {new : true})
+            Orders.findOne({_id : cartId} )
                 .then((data) => {
+                    if(data.status === 'complete') {
+                        let err = new Error('Order Already Completed');
+                        err.statusCode = 404;
+                        next(err);
+                    } else {
+
+                    data.status = 'complete';
+                    data.save();
+
                     if(!data) {
                         let err = new Error('Order not found');
                         err.statusCode = 404;
@@ -178,6 +188,7 @@ module.exports = {
                             next(err)
                         });
                     return data;
+                    }
                 })
                 .then((order) => {
                     let userId = order.userId;

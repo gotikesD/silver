@@ -1,23 +1,71 @@
 import React, { Component } from 'react';
 import api from '../api/'
+import * as pageActions from '../actions/index'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 class CartComponent extends Component {
 
+    componentWillMount() {
+        let token = localStorage.getItem('token');
+        let orderId = localStorage.getItem('orderId');
+        this.props.pageActions.getCart(token,orderId);
+    }
+
+    changeHandle(id,costId,stockId,cost) {
+        let orderId = localStorage.getItem('orderId');
+        let newAmount = $('#'+id).val() || 1;
+        let token = localStorage.getItem('token');
+        api.changeAmount(stockId,newAmount,orderId,token,(data)=> {
+            if(data) {
+                newAmount === 0 ?
+                    $('#'+costId).text('We will phone you') :
+                    $('#'+costId).text( cost * newAmount + ' $')
+
+            }
+        })
+    }
+
+    deleteHandle(rowId,stockId) {
+        api.deleteFromCart(stockId, (data)=> {
+            if(data) {
+                console.log(rowId)
+                $('#'+rowId).css("display","none")
+            }
+        })
+    }
+
+    confirmOrder() {
+        api.confirmOrder((data)=> {
+            if(data) {
+                $('#confirmSuccess').css({"opacity":"1","z-index" :"100"});
+                setTimeout(() => {
+                    $('#confirmSuccess').css({"opacity":"0","z-index" :"100"})
+                    window.location.replace("http://localhost:8080/");
+                },4000)
+            } else {
+                window.location.replace("http://localhost:8080/");
+            }
+        })
+    }
+
     render() {
 
-        let count = 0;
+        let count = 1;
         let cartItems = this.props.cart.carInfo;
         if(cartItems) {
             var result = cartItems.map((i)=> {
                 return (
-                    <tr key={count}>
-                        <th>{count++}</th>
-                        <th>{i.model}</th>
-                        <th>{i.make}</th>
-                        <th>{i.amount}</th>
-                        <th>{i.amount * i.cost} $</th>
+                    <tr key={count++} id={`row${count}`}>
+                        <td>{i.model}</td>
+                        <td>{i.make}</td>
+                        <td ><input id={`amount${count}`}
+                                    type="text"
+                                    placeholder={i.amount}
+                                    style={{'width': '80px'}}/></td>
+                        <td id={`cost${count}`}>{i.cost >0 ? i.amount * i.cost + '$' : 'We will phone you'}</td>
+                        <td><button onClick={this.changeHandle.bind(this,`amount${count}`,`cost${count}`, i.stockId, i.cost)}>Change</button></td>
+                        <td><button onClick={this.deleteHandle.bind(this,`row${count}`, i.stockId)}>Delete</button></td>
                     </tr>
                 )
             })
@@ -29,18 +77,24 @@ class CartComponent extends Component {
                 <table border="0">
                     <caption>Your cart</caption>
                     <tbody>
-                        <tr style={{'marginBottom' : '20px'}}>
-                            <th>№</th>
+                        <tr style={{'height' : '60px'}}>
                             <th>Model</th>
                             <th>Make</th>
                             <th>Amount</th>
                             <th>Total</th>
+                            <th>Change</th>
+                            <th>Delete</th>
                         </tr>
                         {result}
                     </tbody>
                 </table>
+                <div id="confirmSuccess">
+                    <div>You successfully confirm the order!</div>
+                    <div>We will phone you as soon as possible</div>
+                </div>
+
             </div>
-            <button class="confirm">Confirm Order</button>
+            <button onClick={this.confirmOrder.bind(this)} class="confirm">Confirm Order</button>
         </div>
         );
     }

@@ -291,22 +291,32 @@ table {
     top:12px;
     left: 60%
 }
-#signSuccess {
+#signSuccess, #confirmSuccess , #addSuccess {
     position: absolute;
     width: 300px;
     height: 200px;
     background: black;
     left: 38%;
-    top: 102%;
+    top: 60%;
     padding: 20px;
-    z-index: 100;
+    z-index: -100;
     opacity: 0;
     transition: all linear 0.5s;
     text-align: center;
     border-radius: 5px;
 }
+#confirmSuccess {
+    top: 20%;
+    left: 28%;
+}
+#addSuccess {
+    height: 100px;
+    top: 15%;
+    left: 23%;
+}
 
-#signSuccess div {
+
+#signSuccess div, #confirmSuccess div , #addSuccess div {
     margin-top: 30px;
     margin-bottom: 30px;
     text-transform: uppercase;

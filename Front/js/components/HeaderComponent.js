@@ -23,9 +23,9 @@ class HeaderComponent extends Component {
                        this.refs.DOB.value, (data) => {
                 if(data) {
 
-                    $('#signSuccess').css("opacity", "1");
+                    $('#signSuccess').css({"opacity":"1","z-index" :"100"});
                     setTimeout(() => {
-                        $('#signSuccess').css("opacity", "0")
+                        $('#signSuccess').css({"opacity":"0","z-index" :"100"})
                     },2000)
                 }
             });
@@ -96,7 +96,7 @@ class HeaderComponent extends Component {
                         <div className="userLogged" style={this.props.isAuthorized ? {'display': 'block'} : {'display': 'none'} }>
                             <div className="loggedEmail">You logged as {email}</div>
                             <button type="button" className="btn btn-default header-btn pull-right" onClick={this.viewCart.bind(this)}>
-                                <Link to="cart/">Cart</Link>
+                                <Link to="/cart/">Cart</Link>
                             </button>
                             <button onClick={this.logoutHandle.bind(this)} type="button" className="btn btn-default header-btn pull-right">
                                 <Link to="/">Logout</Link>

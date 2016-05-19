@@ -10,7 +10,13 @@ class ItemInfoComponent extends Component {
         if(token) {
             let stockId = this.props.singleCar.stockId;
             api.addToCart(stockId,token, (answer) => {
-                localStorage.setItem('orderId', answer);
+                if(answer) {
+                    localStorage.setItem('orderId', answer);
+                    $('#addSuccess').css({"opacity":"1","z-index" :"100"});
+                    setTimeout(() => {
+                        $('#addSuccess').css({"opacity":"0","z-index" :"100"})
+                    },1500)
+                }
             });
         } else {
             alert('First you need  to login')
@@ -68,6 +74,9 @@ class ItemInfoComponent extends Component {
                     </div>
                 </div>
                 <img src="http://localhost:8080/img/car.jpg" alt="#" className="col-lg-4 col-md-4 col-sm-4 col-xs-12" />
+                <div id="addSuccess">
+                    <div>You successfully add an item!</div>
+                </div>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import * as pageActions from '../actions/index'
+
 const API_HEADERS = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -6,6 +6,7 @@ const API_HEADERS = {
 
 
 export default  {
+
     getProducts(callback) {
         fetch('http://localhost:3000/')
             .then((response) => {
@@ -169,5 +170,93 @@ export default  {
                 throw error;
             });
     },
+
+    changeAmount(stockId,amount,orderId,token, callback){
+        let requestBody = {
+            stockId: stockId,
+            amount : amount
+        };
+
+        fetch(`http://localhost:3000/cart/${orderId}`, {
+            method: 'put',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+    deleteFromCart(stockId,callback) {
+        let orderId = localStorage.getItem('orderId');
+        let token = localStorage.getItem('token');
+
+        let requestBody = {
+            stockId: stockId
+        };
+
+        fetch(`http://localhost:3000/cart/${orderId}`, {
+            method: 'delete',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+    confirmOrder(callback) {
+        let token = localStorage.getItem('token');
+        let orderId = localStorage.getItem('orderId');
+        fetch(`http://localhost:3000/cart/confirm/${orderId}`, {
+            method: 'post',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    }
 
 }
