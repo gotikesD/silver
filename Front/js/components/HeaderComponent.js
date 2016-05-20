@@ -25,7 +25,7 @@ class HeaderComponent extends Component {
 
                     $('#signSuccess').css({"opacity":"1","z-index" :"100"});
                     setTimeout(() => {
-                        $('#signSuccess').css({"opacity":"0","z-index" :"100"})
+                        $('#signSuccess').css({"opacity":"0","z-index" :"-100"})
                     },2000)
                 }
             });

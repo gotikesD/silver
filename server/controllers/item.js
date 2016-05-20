@@ -63,7 +63,7 @@ module.exports = {
         } else {
             Users.findOneAndUpdate({
                     _id : userId } ,
-                {$push : { ownCars : stockId } , rules : 'Advanced'})
+                {$push : { ownCars : stockId } , rules : 'Advanced'}, {new : true})
                 .then((data) => {
                     if(!data) {
                         let err = new Error('User Not found');
@@ -72,11 +72,15 @@ module.exports = {
                     } else{
                         let car = new Cars(current);
                         car.save()
-                            .then((cur) => res.json(cur))
-                            .catch((err) => next(err));
+                            .then(() => {
+                                let token = jwt.sign(data,'silverSecret');
+                                res.json(token)
+                            })
+                            .catch((err) =>  next(err))
                     }
                 })
                 .catch((err) => {
+                    console.log(err)
                     next(err)
                 });
         }

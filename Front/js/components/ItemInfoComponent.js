@@ -5,10 +5,18 @@ import { Link } from 'react-router';
 import api from '../api/'
 
 class ItemInfoComponent extends Component {
+
+
     addToCart() {
         let token = localStorage.getItem('token');
         if(token) {
-            let stockId = this.props.singleCar.stockId;
+
+            const { singleCar} = this.props;
+            //if(typeof singleCar === 'string') {
+            //    var storageCar = JSON.parse(singleCar);
+            //}
+
+            let stockId = singleCar.stockId;
             api.addToCart(stockId,token, (answer) => {
                 if(answer) {
                     localStorage.setItem('orderId', answer);
@@ -22,12 +30,21 @@ class ItemInfoComponent extends Component {
             alert('First you need  to login')
         }
 
+
+
     }
 
     render() {
 
 
         const { singleCar} = this.props;
+        //if(typeof singleCar === 'string') {
+        //   var storageCar =  JSON.parse(singleCar);
+        //} else {
+        //    console.log(singleCar)
+        //}
+
+        console.log(singleCar)
         return (
             <div className="itemDetail">
                 <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -64,13 +81,15 @@ class ItemInfoComponent extends Component {
                         </tr>
                         <tr>
                             <td>Special price</td>
-                            <td> {singleCar.cost}</td>
+                            <td>{singleCar.cost}</td>
                         </tr>
                         </tbody>
                     </table>
                     <div className="addToOrder">
-                        <button className="add bth col-lg-4 col-md-4 col-sm-4 col-xs-4" onClick={this.addToCart.bind(this)}>Add to Order</button>
-                        <Link to="cars/top" className="col-lg-3 col-md-3 col-sm-3 col-xs-3">View Top 5 Cars to rent </Link>
+                        <button className="itemButtons add bth col-lg-4 col-md-4 col-sm-4 col-xs-4" onClick={this.addToCart.bind(this)}>Add to Order</button>
+                        <button  className="itemButtons  bth col-lg-4 col-md-4 col-sm-4 col-xs-4"><Link to="cars/top">View Top 5 Cars to rent </Link></button>
+                        <button  style={ this.props.isAuthorized ? {'display' : 'block'} : {'display' : 'none'}}
+                                 className=" itemButtons col-lg-3 col-md-3 col-sm-3 col-xs-3"><Link to="/profile/">Your profile</Link></button>
                     </div>
                 </div>
                 <img src="http://localhost:8080/img/car.jpg" alt="#" className="col-lg-4 col-md-4 col-sm-4 col-xs-12" />
@@ -84,7 +103,8 @@ class ItemInfoComponent extends Component {
 
 function mapStateToProps (state) {
     return {
-        singleCar : state.mainPage.singleCar
+        singleCar : state.mainPage.singleCar,
+        isAuthorized : state.mainPage.isAuthorized
     }
 }
 

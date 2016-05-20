@@ -43,8 +43,6 @@ class CartComponent extends Component {
                     $('#confirmSuccess').css({"opacity":"0","z-index" :"100"})
                     window.location.replace("http://localhost:8080/");
                 },4000)
-            } else {
-                window.location.replace("http://localhost:8080/");
             }
         })
     }

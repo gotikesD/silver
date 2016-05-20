@@ -55,8 +55,10 @@ module.exports = {
                         order.userId = userId;
                         order.save( (err)=> {
                             if(err) next(err)
+                            else  {
+                                res.json(order._id)
+                            }
                         });
-                        res.json(order._id)
                     } else {
                         res.json(temp._id)
                     }

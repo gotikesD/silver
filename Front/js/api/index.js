@@ -1,4 +1,4 @@
-
+var jwtDecode = require('jwt-decode');
 const API_HEADERS = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -34,6 +34,7 @@ export default  {
                 }
             })
             .then((responseData) => {
+                localStorage.setItem('single', JSON.stringify(responseData));
                 callback(responseData)
             })
             .catch((error) => {
@@ -257,6 +258,127 @@ export default  {
             .catch((error) => {
                 throw error;
             });
+    } ,
+
+    addCar(car, callback) {
+        let token = localStorage.getItem('token');
+        let requestBody = {};
+        let carsProperty = Object.keys(car);
+        carsProperty.forEach((i)=> {
+            requestBody[i] = car[i];
+        });
+        fetch(`http://localhost:3000/cars/`, {
+            method: 'post',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+    getYourCars(callback) {
+        console.log('here');
+        let token = localStorage.getItem('token');
+        fetch('http://localhost:3000/advanced/cars/', {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+    deleteOwnCar(stockId, callback) {
+
+        let token = localStorage.getItem('token');
+        let requestBody = {
+            stockId : stockId
+        };
+        fetch(`http://localhost:3000/advanced/cars/`, {
+            method: 'delete',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    },
+
+    updateOwnCar(stockId,field, callback) {
+
+
+        let token = localStorage.getItem('token');
+
+        field.stockId = stockId;
+
+        let requestBody = field;
+        fetch(`http://localhost:3000/advanced/cars/`, {
+            method: 'put',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
+
+
 
 }
