@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import Content from './AdminContent'
 import api from '../api/'
+import * as pageActions from '../actions/index'
+import { Link } from 'react-router';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 class AdminComponent extends Component {
 
     constructor() {
         super();
         this.state = {
-            actionName : '',
-            allUsers : [],
-            topUsers : [],
-            topCars : [],
-            lastOrders: []
+            actionName : ''
         }
     }
 
@@ -20,29 +20,19 @@ class AdminComponent extends Component {
     }
 
     allUsers() {
-        api.getAllUsers((answer) => {
-            this.setState( { allUsers : answer})
-        })
+        this.props.pageActions.allUsersInfo()
     }
 
     topUsers() {
-        api.getTopUsers((answer) => {
-            console.log(answer)
-            this.setState( { topUsers : answer})
-        })
+        this.props.pageActions.topUsersInfo()
     }
 
     topCars () {
-        api.getTopCars((answer) => {
-            this.setState( { topCars : answer})
-        })
+        this.props.pageActions.topCarsInfo()
     }
 
     lastWeek () {
-        api.getLastWeek((answer) => {
-            console.log(answer)
-            this.setState( { lastOrders : answer})
-        })
+        this.props.pageActions.lastOrdersInfo()
     }
 
     render() {
@@ -56,13 +46,31 @@ class AdminComponent extends Component {
                     <li onClick={this.userActionName.bind(this, 'lastWeekOrders')}><a href="#" onClick={this.lastWeek.bind(this)}>Last week orders</a></li>
                 </ul>
                 <Content actionName={this.state.actionName}
-                         allUsers={this.state.allUsers}
-                         lastOrders={this.state.lastOrders}
-                         topCars={this.state.topCars}
-                         topUsers={this.state.topUsers}/>
+                         allUsers={this.props.allUsers}
+                         lastOrders={this.props.lastOrders}
+                         topCars={this.props.topAdminCars}
+                         topUsers={this.props.topUsers}/>
             </div>
         );
     }
 }
 
-export default AdminComponent;
+
+function mapStateToProps (state) {
+    return {
+        allUsers: state.mainPage.allUsers,
+        topUsers: state.mainPage.topUsers,
+        topAdminCars: state.mainPage.topAdminCars,
+        lastOrders: state.mainPage.lastOrders
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        pageActions: bindActionCreators(pageActions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps , mapDispatchToProps)(AdminComponent)

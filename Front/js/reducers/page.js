@@ -1,6 +1,8 @@
 'use strict';
 
-import  { GET_ALL_GARS , GET_SINGLE_CAR , GET_TOP_CARS , LOGIN , LOGOUT , GET_YOUR_CART , SINGLE_USER_INFO} from '../constants/';
+import  { GET_ALL_GARS , GET_SINGLE_CAR , GET_TOP_CARS ,
+          LOGIN , LOGOUT , GET_YOUR_CART , SINGLE_USER_INFO,
+          GET_ALL_USERS , GET_TOP_USERS , GET_TOP_CARS_ADMIN , GET_LAST_ORDERS } from '../constants/';
 
 const initialState = {
     cars : [],
@@ -8,7 +10,11 @@ const initialState = {
     topCars : [],
     isAuthorized : false,
     cart : {},
-    singleUser : {}
+    singleUser : {},
+    allUsers : [],
+    topUsers : [],
+    topAdminCars : [],
+    lastOrders : []
 };
 
 export default function userstate(state = initialState,action) {
@@ -48,6 +54,26 @@ export default function userstate(state = initialState,action) {
         case SINGLE_USER_INFO:
             return  Object.assign({}, state, {
                 singleUser: action.payload
+            });
+
+        case GET_ALL_USERS:
+            return  Object.assign({}, state, {
+                allUsers: action.payload
+            });
+
+        case GET_TOP_USERS:
+            return  Object.assign({}, state, {
+                topUsers: action.payload
+            });
+
+        case GET_TOP_CARS_ADMIN:
+            return  Object.assign({}, state, {
+                topAdminCars: action.payload
+            });
+
+        case GET_LAST_ORDERS:
+            return  Object.assign({}, state, {
+                lastOrders: action.payload
             });
 
         default:

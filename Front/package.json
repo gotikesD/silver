@@ -42,6 +42,7 @@
     "bower": "^1.7.9",
     "fbemitter": "^2.0.2",
     "flux": "^2.1.1",
+    "highcharts": "^4.2.5",
     "history": "^2.0.2",
     "joi": "^8.0.5",
     "jwt-decode": "^2.0.1",

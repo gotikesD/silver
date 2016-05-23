@@ -5,11 +5,11 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+var Highcharts = require('highcharts'),
+    addFunnel = require('highcharts/modules/funnel');
+
 class AdminContent extends Component {
 
-    setCar(id) {
-        this.props.pageActions.getSingle(id)
-    }
 
     render() {
 
@@ -52,7 +52,7 @@ class AdminContent extends Component {
                         <td>{i.make}</td>
                         <td>{i.carState}</td>
                         <td>{i.bought}</td>
-                        <td><Link to={`/cars/${i._id}`} onClick={this.setCar.bind(this,i._id)}> Detail Info</Link></td>
+                        <td><Link to={`/cars/${i._id}`}> Detail Info</Link></td>
                     </tr>
                 )
             })
@@ -68,7 +68,7 @@ class AdminContent extends Component {
                         {i}
                     </div>
                 )
-            })
+            });
 
         }
 
@@ -137,17 +137,4 @@ class AdminContent extends Component {
     }
 }
 
-function mapStateToProps (state) {
-    return {
-        cars: state.mainPage
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        pageActions: bindActionCreators(pageActions, dispatch)
-    }
-}
-
-
-export default connect(mapStateToProps , mapDispatchToProps)(AdminContent)
+export default AdminContent
