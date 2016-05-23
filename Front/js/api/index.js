@@ -377,8 +377,133 @@ export default  {
             .catch((error) => {
                 throw error;
             });
+    } ,
+
+    getAllUsers(callback) {
+        let token = localStorage.getItem('token');
+        fetch('http://localhost:3000/admin/users', {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+    getSingleUserInfo(id, token , callback) {
+        fetch(`http://localhost:3000/admin/users/${id}`, {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                console.log(responseData)
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+
+    getTopUsers(callback) {
+        let token = localStorage.getItem('token');
+        fetch('http://localhost:3000/admin/topUsers', {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+
+    getTopCars(callback) {
+        let token = localStorage.getItem('token');
+        fetch('http://localhost:3000/admin/topCars', {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    } ,
+
+    getLastWeek(callback) {
+        let token = localStorage.getItem('token');
+        fetch('http://localhost:3000/admin/lastOrders', {
+            method: 'get',
+            mode: 'cors',
+            headers: {'x-access-token' : token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Wrong data')
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
-
-
 
 }

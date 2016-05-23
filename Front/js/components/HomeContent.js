@@ -11,9 +11,7 @@ class HomeContent extends Component {
         this.props.pageActions.getAllCars()
     }
 
-    own(id) {
-        this.props.pageActions.getSingle(id)
-    }
+
 
     render() {
 
@@ -35,7 +33,7 @@ class HomeContent extends Component {
                         <span>PRICE</span>
                         <span>{i.cost  ? i.cost + ' $': 'Call manufacter'}</span>
                     </div>
-                    <Link onClick={this.own.bind(this, i._id)} to={`/cars/${i._id}/`}>More detail</Link>
+                    <Link to={`/cars/${i._id}/`}>More detail</Link>
                 </div>
             </div>
             )

@@ -289,7 +289,7 @@ table {
 .loggedEmail {
     position: absolute;
     top:12px;
-    left: 60%
+    left: 50%
 }
 #signSuccess, #confirmSuccess ,
 #addSuccess , #addCarSuccess ,
@@ -299,7 +299,7 @@ table {
     height: 200px;
     background: black;
     left: 38%;
-    top: 60%;
+    top: 50%;
     padding: 20px;
     z-index: -100;
     opacity: 0;

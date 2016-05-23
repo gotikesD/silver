@@ -7,7 +7,7 @@ const Orders = require('../models/order');
 module.exports = {
 
     getAllUsers: (req, res, next) => {
-        User.find({}, {_id: 1, dateOfBirth: 1, name: 1, email: 1})
+        User.find({}, {_id: 1, dateOfBirth: 1,rules : 1, name: 1, email: 1})
             .then((data) => {
                 res.json(data)
             })

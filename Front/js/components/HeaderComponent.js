@@ -8,10 +8,21 @@ var jwtDecode = require('jwt-decode');
 
 class HeaderComponent extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            isAdmin : false
+        }
+    }
+
     componentWillMount() {
-        let token = localStorage.getItem('token')
+        let token = localStorage.getItem('token');
         if(token) {
             this.props.pageActions.Authorize();
+            let user = jwtDecode(token);
+            if(user._doc.rules === 'Admin') {
+                this.setState({isAdmin : true})
+            }
         }
     }
 
@@ -41,6 +52,11 @@ class HeaderComponent extends Component {
         api.login(this.refs.emailL.value,
                   this.refs.passwordL.value, (answer) => {
 
+                let user = jwtDecode(answer);
+                if(user._doc.rules === 'Admin') {
+                    this.setState({isAdmin : true})
+                }
+
                 let token = localStorage.setItem("token", answer);
                 this.props.pageActions.Authorize();
                 this.refs.emailL.value='';
@@ -49,6 +65,7 @@ class HeaderComponent extends Component {
     }
 
     logoutHandle() {
+        this.setState({isAdmin : false})
         window.localStorage.clear();
         this.props.pageActions.logout();
     }
@@ -97,6 +114,11 @@ class HeaderComponent extends Component {
                             <div className="loggedEmail">You logged as {email}</div>
                             <button type="button" className="btn btn-default header-btn pull-right" onClick={this.viewCart.bind(this)}>
                                 <Link to="/cart/">Cart</Link>
+                            </button>
+                            <button type="button"
+                                    style= { this.state.isAdmin ? {'display' : 'block'} : {'display' : 'none'}}
+                                    className="btn btn-default header-btn pull-right">
+                                <Link to="/profile/admin/">Admin</Link>
                             </button>
                             <button type="button" className="btn btn-default header-btn pull-right">
                                 <Link to="/profile/">Profile</Link>

@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
+import * as pageActions from '../actions/index'
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import api from '../api/'
 
 class ItemInfoComponent extends Component {
+
+    componentWillMount() {
+        var id = this.props.params.id;
+        this.props.pageActions.getSingle(id)
+    }
 
 
     addToCart() {
@@ -29,22 +35,12 @@ class ItemInfoComponent extends Component {
         } else {
             alert('First you need  to login')
         }
-
-
-
     }
 
     render() {
 
 
         const { singleCar} = this.props;
-        //if(typeof singleCar === 'string') {
-        //   var storageCar =  JSON.parse(singleCar);
-        //} else {
-        //    console.log(singleCar)
-        //}
-
-        console.log(singleCar)
         return (
             <div className="itemDetail">
                 <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -109,4 +105,11 @@ function mapStateToProps (state) {
 }
 
 
-export default connect(mapStateToProps )(ItemInfoComponent)
+function mapDispatchToProps(dispatch) {
+    return {
+        pageActions: bindActionCreators(pageActions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps , mapDispatchToProps)(ItemInfoComponent)

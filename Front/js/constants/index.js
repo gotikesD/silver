@@ -4,5 +4,6 @@ module.exports = {
     GET_TOP_CARS : 'GET_TOP_CARS',
     LOGIN : 'LOGIN',
     LOGOUT : 'LOGOUT',
-    GET_YOUR_CART : 'GET_YOUR_CART'
+    GET_YOUR_CART : 'GET_YOUR_CART',
+    SINGLE_USER_INFO : 'SINGLE_USER_INFO'
 };

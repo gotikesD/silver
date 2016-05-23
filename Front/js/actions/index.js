@@ -1,4 +1,4 @@
-import { GET_ALL_GARS , GET_SINGLE_CAR  , GET_TOP_CARS, LOGIN , LOGOUT , GET_YOUR_CART} from '../constants/'
+import { GET_ALL_GARS , GET_SINGLE_CAR  , GET_TOP_CARS, LOGIN , LOGOUT , GET_YOUR_CART , SINGLE_USER_INFO} from '../constants/'
 import api from '../api/index';
 
 function getAll(cars) {
@@ -75,6 +75,23 @@ export  function getCart(orderId, token) {
         api.viewCart( orderId, token,
             cartContent => {
                 dispatch(viewCart(cartContent))
+            })
+    }
+}
+
+
+function setSingleUser(singleUser) {
+    return {
+        type: SINGLE_USER_INFO,
+        payload: singleUser
+    }
+}
+
+export  function singleUserInfo(id, token) {
+    return dispatch => {
+        api.getSingleUserInfo( id, token,
+            singleUser => {
+                dispatch(setSingleUser(singleUser))
             })
     }
 }
