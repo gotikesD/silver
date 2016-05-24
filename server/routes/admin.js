@@ -1,19 +1,19 @@
 "use strict";
-const express = require('express');
+const express = require(`express`);
 const router = express.Router();
 
-const controller = require('../controllers/admin');
-const authController = require('../controllers/auth');
+const controller = require(`../controllers/admin`);
+const authController = require(`../controllers/auth`);
 
-router.get('/users/',authController.checkUserStatus, authController.adminCheck, controller.getAllUsers);
+router.get(`/users/`, authController.checkUserStatus, authController.adminCheck, controller.getAllUsers);
 
-router.get('/users/:userId',authController.checkUserStatus, authController.adminCheck, controller.userInfo);
+router.get(`/users/:userId`, authController.checkUserStatus, authController.adminCheck, controller.userInfo);
 
-router.get('/topCars',authController.checkUserStatus, authController.adminCheck, controller.viewTopCars);
+router.get(`/topCars`, authController.checkUserStatus, authController.adminCheck, controller.viewTopCars);
 
-router.get('/topUsers',authController.checkUserStatus, authController.adminCheck, controller.viewTopUsers);
+router.get(`/topUsers`, authController.checkUserStatus, authController.adminCheck, controller.viewTopUsers);
 
-router.get('/lastOrders',authController.checkUserStatus, authController.adminCheck, controller.viewLastWeekOrders);
+router.get(`/lastOrders`, authController.checkUserStatus, authController.adminCheck, controller.viewLastWeekOrders);
 
 
 module.exports = router;
@@ -164,8 +164,6 @@ module.exports = router;
  * @apiErrorExample Error-Response:
  *     Permission Denied
  */
-
-
 
 /**
  * @api {get} /admin/topUsers/:userId Request for top five users

@@ -1,14 +1,14 @@
-import React from 'react'
-import { Route, IndexRoute } from 'react-router';
+import { IndexRoute, Route } from 'react-router';
 
+import AdminComponent from '../components/AdminComponent';
 import App from '../MainContainer';
+import CartComponent from '../components/CartComponent';
 import HomeContent from '../components/HomeContent';
 import ItemInfoComponent from '../components/ItemInfoComponent';
 import TopCarsComponent from '../components/TopCarsComponent';
-import CartComponent from '../components/CartComponent';
 import UserComponent from '../components/UserComponent';
-import AdminComponent from '../components/AdminComponent';
 import UserDetailComponent from '../components/UserDetailComponent';
+import React from 'react'
 
 export default (
     <div>

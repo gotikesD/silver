@@ -1,17 +1,17 @@
-const express = require('express');
+const express = require(`express`);
 const router = express.Router();
-const controller = require('../controllers/cart');
-const authController = require('../controllers/auth');
+const controller = require(`../controllers/cart`);
+const authController = require(`../controllers/auth`);
 
-router.post('/', authController.checkUserStatus , controller.addToOrder);
+router.post(`/`, authController.checkUserStatus, controller.addToOrder);
 
-router.delete('/:orderId',authController.checkUserStatus ,authController.cartRulesCheck , controller.deleteFromOrder);
+router.delete(`/:orderId`, authController.checkUserStatus, authController.cartRulesCheck, controller.deleteFromOrder);
 
-router.put('/:orderId',authController.checkUserStatus ,authController.cartRulesCheck , controller.changeOrder);
+router.put(`/:orderId`, authController.checkUserStatus, authController.cartRulesCheck, controller.changeOrder);
 
-router.get('/view/:cartId',authController.checkUserStatus ,authController.cartRulesCheck , controller.viewOrder);
+router.get(`/view/:cartId`, authController.checkUserStatus, authController.cartRulesCheck, controller.viewOrder);
 
-router.post('/confirm/:cartId',authController.checkUserStatus ,authController.cartRulesCheck , controller.confirmOrder);
+router.post(`/confirm/:cartId`, authController.checkUserStatus, authController.cartRulesCheck, controller.confirmOrder);
 
 
 module.exports = router;

@@ -1,10 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const csv = require('csv-parser');
-const mongoose = require('mongoose');
-const config = require('../config/index');
-const CarItem = require('../models/carsItem');
+const fs = require(`fs`);
+const csv = require(`csv-parser`);
+const mongoose = require(`mongoose`);
+const config = require(`../config/index`);
+const CarItem = require(`../models/carsItem`);
 
 
 mongoose.connect(config.database);
@@ -12,42 +12,42 @@ mongoose.connect(config.database);
 let errorsCount = 0;
 let totalCount = 0;
 
-fs.createReadStream('../data/initialData.csv')
-    .pipe(csv())
-    .on('data',(data) => {
-        let current = {};
-        current.stockId = data['Stock##'];
-        current.VINCode = data.VIN;
-        current.make = data.Make;
-        current.model = data.Model;
-        current.color = data.Color;
-        current.retailPrice = data.RtlPri;
-        current.askPrice = data.AskPri;
-        current.internationalPrice = data.ItnPti;
-        current.year = data.YR;
-        current.mileage = data.Mileag;
+fs.createReadStream(`../data/initialData.csv`)
+  .pipe(csv())
+  .on(`data`, (chunk) => {
+    const current = {};
+    current.stockId = chunk[`Stock##`];
+    current.VINCode = chunk.VIN;
+    current.make = chunk.Make;
+    current.model = chunk.Model;
+    current.color = chunk.Color;
+    current.retailPrice = chunk.RtlPri;
+    current.askPrice = chunk.AskPri;
+    current.internationalPrice = chunk.ItnPti;
+    current.year = chunk.YR;
+    current.mileage = chunk.Mileag;
 
-        data.N === 'N' ? current.carState = 'New' : current.carState = 'Used';
-        data.Transmissi.length > 0 ? current.transmissionType = data.Transmissi :
-                                     current.transmissionType = 'Manual';
+    chunk.N === `N` ? current.carState = `New` : current.carState = `Used`;
+    chunk.Transmissi.length > 0 ? current.transmissionType = chunk.Transmissi :
+      current.transmissionType = `Manual`;
 
-        current.entryData = data['Entry Da'];
-        current.cost = data.Cost.split('.')[0].slice(-2) ;
+    current.entryData = chunk[`Entry Da`];
+    current.cost = chunk.Cost.split(`.`)[0].slice(-2);
 
-        let item = new CarItem(current);
+    const item = new CarItem(current);
 
-        item.save()
-                .then( () => {
-                      totalCount++;
-                })
+    item.save()
+      .then(() => {
+        totalCount++;
+      })
 
-               .catch(err => {
-                       errorsCount++;
-               } );
-            totalCount++
-    })
-    .on('end', () => {
-       console.log('Total quantity ' + (totalCount - errorsCount));
-       console.log('Errors ' + errorsCount)
+      .catch(error => {
+        errorsCount++;
+      });
+    totalCount++
+  })
+  .on(`end`, () => {
+    console.log(`Total quantity  ${(totalCount - errorsCount)}`);
+    console.log(`Errors  ${errorsCount}`)
 
-    });
+  });

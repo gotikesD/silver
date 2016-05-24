@@ -1,24 +1,24 @@
 "use strict";
-const express = require('express');
+const express = require(`express`);
 const router = express.Router();
 
 
-const controller = require('../controllers/item');
-const authController = require('../controllers/auth');
+const controller = require(`../controllers/item`);
+const authController = require(`../controllers/auth`);
 
-router.get('/count', controller.getAllCount);
-router.get('/', controller.getAll);
-router.get('/cars/top', controller.viewTopCars);
-router.get('/cars/:id', controller.getSingle);
-router.post('/cars' ,authController.checkUserStatus, controller.addNew);
+router.get(`/count`, controller.getAllCount);
+router.get(`/`, controller.getAll);
+router.get(`/cars/top`, controller.viewTopCars);
+router.get(`/cars/:id`, controller.getSingle);
+router.post(`/cars`, authController.checkUserStatus, controller.addNew);
 
 // available only  to the advanced user
 
-router.delete('/advanced/cars',authController.checkUserStatus, authController.checkRules , authController.checkOwnCar , controller.deleteCar);
-router.put('/advanced/cars',authController.checkUserStatus, authController.checkRules , authController.checkOwnCar, controller.updateCar);
+router.delete(`/advanced/cars`, authController.checkUserStatus, authController.checkRules, authController.checkOwnCar, controller.deleteCar);
+router.put(`/advanced/cars`, authController.checkUserStatus, authController.checkRules, authController.checkOwnCar, controller.updateCar);
 
-router.get('/advanced/cars/',authController.checkUserStatus, authController.checkRules , controller.viewAllUserCars);
-router.get('/advanced/cars/:carId',authController.checkUserStatus, authController.checkRules , controller.viewSingleUserCar);
+router.get(`/advanced/cars/`, authController.checkUserStatus, authController.checkRules, controller.viewAllUserCars);
+router.get(`/advanced/cars/:carId`, authController.checkUserStatus, authController.checkRules, controller.viewSingleUserCar);
 
 
 module.exports = router;
@@ -46,8 +46,6 @@ module.exports = router;
  *}
  *]
  */
-
-
 
 /**
  * @api {get} /cars/:id  Request for get single car info
@@ -131,8 +129,6 @@ module.exports = router;
  *  "createdAt": "2016-05-10T13:50:21.775Z"
  * }
  */
-
-
 
 /**
  * @api {delete} /delete Deleting Single Car

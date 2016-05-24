@@ -1,231 +1,237 @@
 "use strict";
-const mongoose = require('mongoose');
-const Orders = require('../models/order');
-const Cars = require('../models/carsItem');
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const mongoose = require(`mongoose`);
+const Orders = require(`../models/order`);
+const Cars = require(`../models/carsItem`);
+const User = require(`../models/user`);
+const jwt = require(`jsonwebtoken`);
+const nodemailer = require(`nodemailer`);
 
 
 module.exports = {
 
-    addToOrder: (req, res, next) => {
+  addToOrder : (req, res, next) => {
 
-       let token = jwt.verify(req.headers['x-access-token'], 'silverSecret');
-       let userId = token._doc._id;
-
-
-       let stockId = req.body.stockId;
-       let orderId = req.body.orderId;
-
-        if( !userId || !stockId ) {
-            let err = new Error('UserId,StockId required');
-            err.statusCode = 404;
-            next(err);
-        } else if(orderId) {
-            Orders.findOneAndUpdate({
-                    orderId : orderId },
-                {$push : { items : { stockId : stockId }  }})
-                .then((temp) => {
-                    if(!temp) {
-                        let order = new Orders();
-                        order.items.push({stockId : stockId });
-                        order.userId = userId;
-                        order.save( (err)=> {
-                            if(err) next(err)
-                        });
-                        res.json(order._id)
-                    } else {
-                        res.json(temp._id)
-                    }
-
-                })
-                .catch((err) => {
-                    next(new Error(err))
-                })
-        }
-        else {
-            Orders.findOneAndUpdate({
-                    userId : userId },
-                {$push : { items : { stockId : stockId }  }})
-                .then((temp) => {
-                    if(!temp) {
-                        let order = new Orders();
-                        order.items.push({stockId : stockId });
-                        order.userId = userId;
-                        order.save( (err)=> {
-                            if(err) next(err)
-                            else  {
-                                res.json(order._id)
-                            }
-                        });
-                    } else {
-                        res.json(temp._id)
-                    }
-
-                })
-                .catch((err) => {
-                    next(new Error(err))
-                })
-        }
-    } ,
-
-    deleteFromOrder : (req,res,next) => {
-
-        let orderId =  req.params.orderId;
-        let stockId = req.body.stockId;
-
-        if(!orderId || !stockId) {
-            let err = new Error('OrderId,StockId required');
-            err.statusCode = 404;
-            next(err);
-        } else {
-            Orders.findOneAndUpdate({
-                    _id : orderId },
-                { $pull : { items :  { stockId :stockId } }})
-                .then((temp) => {
-                    res.json(temp._id)
-                })
-                .catch((err) => {
-                    next(err)
-                })
-        }
-    },
-
-    changeOrder : (req,res,next) => {
-
-        let orderId =  req.params.orderId;
-        let stockId = req.body.stockId;
-        let amount = req.body.amount;
-
-        if(!orderId || !stockId || !amount) {
-            let err = new Error('OrderId, stockId, amount required!');
-            err.statusCode = 404;
-            next(err);
-        } else {
-            Orders.findOneAndUpdate({
-                    _id : orderId, 'items.stockId' : stockId },
-                {'items.$.amount' : amount},
-                {new : true}
-                )
-                .then((answer) => {
-                    res.send(answer._id)
-                })
-                .catch((err) => {
-                    next(err)
-                })
-        }
-
-    },
-
-    viewOrder : (req,res,next) => {
+    const token = jwt.verify(req.headers[`x-access-token`], `silverSecret`);
+    const userId = token._doc._id;
 
 
-        let cartId = req.params.cartId;
-        if(!cartId) {
-            let err = new Error('OrderID required');
-            err.statusCode = 404;
-            next(err);
-        } else {
-            Orders.findOne({_id : cartId})
-                .then((data) => {
-                    let carsId = data.items.map((i) => {
-                        return i.stockId
-                    });
-                    Cars.find({stockId : {$in: carsId } })
-                        .then((cars)=> {
-                            let copy = Object.assign({}, data._doc)
-                           copy['carInfo'] = cars;
-                           return copy
-                        })
-                        .then((complete) => {
-                          res.json(complete)
-                        })
-                        .catch((err) => {
-                            next(err)
-                        })
-                })
-                .catch((err) => {
-                    next(err)
-                })
-        }
-    },
+    const stockId = req.body.stockId;
+    const orderId = req.body.orderId;
 
-    confirmOrder : (req,res,next) => {
+    if (!userId || !stockId) {
+      const error = new Error(`UserId,StockId required`);
+      error.statusCode = 404;
+      next(error);
+    } else if (orderId) {
+      Orders.findOneAndUpdate({
+        orderId : orderId
+      },
+        { $push : { items : { stockId : stockId } } })
+        .then((temp) => {
+          if (!temp) {
+            const order = new Orders();
+            order.items.push({ stockId : stockId });
+            order.userId = userId;
+            order.save((error) => {
+              if (error) {
+                next(error)
+              }
+            });
+            res.json(order._id)
+          } else {
+            res.json(temp._id)
+          }
 
-        let cartId = req.params.cartId;
-        if(!cartId) {
-            let err = new Error('OrderID required');
-            err.statusCode = 404;
-            next(err);
-        } else {
-            Orders.findOne({_id : cartId} )
-                .then((data) => {
-                    if(data.status === 'complete') {
-                        let err = new Error('Order Already Completed');
-                        err.statusCode = 404;
-                        next(err);
-                    } else {
+        })
+        .catch((error) => {
+          next(new Error(error))
+        })
+    } else {
+      Orders.findOneAndUpdate({
+        userId : userId
+      },
+        { $push : { items : { stockId : stockId } } })
+        .then((temp) => {
+          if (!temp) {
+            const order = new Orders();
+            order.items.push({ stockId : stockId });
+            order.userId = userId;
+            order.save((error) => {
+              if (error) {
+                next(error)
+              } else {
+                res.json(order._id)
+              }
+            });
+          } else {
+            res.json(temp._id)
+          }
 
-                    data.status = 'complete';
-                    data.save();
-
-                    if(!data) {
-                        let err = new Error('Order not found');
-                        err.statusCode = 404;
-                        next(err);
-                    }
-                    let items =  data.items.map((i) => {
-                        return i.stockId
-                    });
-
-                    Cars.find({stockId:  { $in : items} })
-                        .then((cars)=> {
-                            cars.forEach(function(car) {
-                                car.bought += 1 ;
-                                car.save();
-                            });
-                        })
-                        .catch((err) => {
-                            next(err)
-                        });
-                    return data;
-                    }
-                })
-                .then((order) => {
-                    let userId = order.userId;
-                    User.findOne( {_id :userId })
-                        .then((user) => {
-                            user.sendOrders += 1;
-                            user.save();
-                            return user
-                        })
-                        .then((userInfo) => {
-                            let transporter = nodemailer.createTransport();
-                            var mailData = {
-                                from: 'silverCars@mail.com',
-                                to: userInfo.email,
-                                subject: 'Here is your order',
-                                text: 'Plaintext version of the message',
-                                html: '<div><h2>Hello ' + userInfo.name + ' ' + userInfo.surName +'</h2><br/>' +
-                                      '<mark>Hello from silver cars</mark>'+'<div>'+ 'You order Id Is' + order._id +'</div></div>'
-                            };
-                            transporter.sendMail(mailData, (err) => {
-                                next(err)
-                            });
-                            return order._id
-                        })
-                        .then((orderID) => {
-                            res.json(orderID)
-                        })
-                        .catch((err) => {
-                            next(err)
-                        })
-
-                })
-                .catch((err) => {
-                    next(err)
-                })
-        }
+        })
+        .catch((error) => {
+          next(new Error(error))
+        })
     }
+  },
+
+  deleteFromOrder : (req, res, next) => {
+
+    const orderId = req.params.orderId;
+    const stockId = req.body.stockId;
+
+    if (!orderId || !stockId) {
+      const error = new Error(`OrderId,StockId required`);
+      error.statusCode = 404;
+      next(error);
+    } else {
+      Orders.findOneAndUpdate({
+        _id : orderId
+      },
+        { $pull : { items : { stockId : stockId } } })
+        .then((temp) => {
+          res.json(temp._id)
+        })
+        .catch((error) => {
+          next(error)
+        })
+    }
+  },
+
+  changeOrder : (req, res, next) => {
+
+    const orderId = req.params.orderId;
+    const stockId = req.body.stockId;
+    const amount = req.body.amount;
+
+    if (!orderId || !stockId || !amount) {
+      const error = new Error(`OrderId, stockId, amount required!`);
+      error.statusCode = 404;
+      next(error);
+    } else {
+      Orders.findOneAndUpdate({
+        _id : orderId, 'items.stockId' : stockId
+      },
+        { 'items.$.amount' : amount },
+        { new : true }
+        )
+        .then((answer) => {
+          res.send(answer._id)
+        })
+        .catch((error) => {
+          next(error)
+        })
+    }
+
+  },
+
+  viewOrder : (req, res, next) => {
+
+
+    const cartId = req.params.cartId;
+    if (!cartId) {
+      const error = new Error(`OrderID required`);
+      error.statusCode = 404;
+      next(error);
+    } else {
+      Orders.findOne({ _id : cartId })
+        .then((orders) => {
+          const carsId = orders.items.map((i) => {
+            return i.stockId
+          });
+          Cars.find({ stockId : { $in : carsId } })
+            .then((cars) => {
+              const copy = Object.assign({}, orders._doc)
+              copy[`carInfo`] = cars;
+              return copy
+            })
+            .then((complete) => {
+              res.json(complete)
+            })
+            .catch((error) => {
+              next(error)
+            })
+        })
+        .catch((error) => {
+          next(error)
+        })
+    }
+  },
+
+  confirmOrder : (req, res, next) => {
+
+    const cartId = req.params.cartId;
+    if (!cartId) {
+      const error = new Error(`OrderID required`);
+      error.statusCode = 404;
+      next(error);
+    } else {
+      Orders.findOne({ _id : cartId })
+        .then((orders) => {
+          if (orders.status === `complete`) {
+            const error = new Error(`Order Already Completed`);
+            error.statusCode = 404;
+            next(error);
+          } else {
+            orders.status = `complete`;
+            orders.save();
+
+            if (!orders) {
+              const error = new Error(`Order not found`);
+              error.statusCode = 404;
+              next(error);
+            }
+            const items = orders.items.map((i) => {
+              return i.stockId
+            });
+
+            Cars.find({ stockId : { $in : items } })
+              .then((cars) => {
+                cars.forEach((car) => {
+                  const boughtIncriment = 1;
+                  car.bought += boughtIncriment;
+                  car.save();
+                });
+              })
+              .catch((error) => {
+                next(error)
+              });
+            return orders;
+          }
+        })
+        .then((order) => {
+          const userId = order.userId;
+          User.findOne({ _id : userId })
+            .then((user) => {
+              const ordersIncriment = 1;
+              user.sendOrders += ordersIncriment;
+              user.save();
+              return user
+            })
+            .then((userInfo) => {
+              const transporter = nodemailer.createTransport();
+              const mailData = {
+                from : `silverCars@mail.com`,
+                to : userInfo.email,
+                subject : `Here is your order`,
+                text : `Plaintext version of the message`,
+                html : `<div><h2>Hello ' ${userInfo.name}  ${userInfo.surName}  </h2><br/><mark>Hello from silver cars</mark><div>You order Id Is ${order._id} </div></div>`
+              };
+              transporter.sendMail(mailData, (error) => {
+                next(error)
+              });
+              return order._id
+            })
+            .then((orderID) => {
+              res.json(orderID)
+            })
+            .catch((error) => {
+              next(error)
+            })
+
+        })
+        .catch((error) => {
+          next(error)
+        })
+    }
+  }
 }

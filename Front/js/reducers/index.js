@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux'
-import mainPage from './page'
-import users from './user'
 import { routerReducer as routing } from 'react-router-redux'
+import users from './user'
+import mainPage from './page'
+
 
 export default combineReducers({
-    mainPage,
-    users,
-    routing
+  mainPage,
+  users,
+  routing
 })
 
 
