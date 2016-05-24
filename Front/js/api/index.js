@@ -7,8 +7,32 @@ const API_HEADERS = {
 
 export default  {
 
-    getProducts(callback) {
-        fetch('http://localhost:3000/')
+    getProducts(perPage,page,callback) {
+
+        if(!perPage) {
+            perPage = 8
+        }
+        if(!page) {
+            page = 1
+        }
+        fetch(`http://localhost:3000/?perPage=${perPage}&page=${page}`)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Server response wasn't OK");
+                }
+            })
+            .then((responseData) => {
+                callback(responseData)
+            })
+            .catch((error) => {
+                throw error;
+            });
+    },
+
+    getCount(callback) {
+        fetch(`http://localhost:3000/count`)
             .then((response) => {
                 if (response.ok) {
                     return response.json();

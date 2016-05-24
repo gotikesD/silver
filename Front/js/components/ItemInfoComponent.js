@@ -18,9 +18,6 @@ class ItemInfoComponent extends Component {
         if(token) {
 
             const { singleCar} = this.props;
-            //if(typeof singleCar === 'string') {
-            //    var storageCar = JSON.parse(singleCar);
-            //}
 
             let stockId = singleCar.stockId;
             api.addToCart(stockId,token, (answer) => {

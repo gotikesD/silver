@@ -6,6 +6,7 @@ const router = express.Router();
 const controller = require('../controllers/item');
 const authController = require('../controllers/auth');
 
+router.get('/count', controller.getAllCount);
 router.get('/', controller.getAll);
 router.get('/cars/top', controller.viewTopCars);
 router.get('/cars/:id', controller.getSingle);

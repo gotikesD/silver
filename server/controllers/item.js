@@ -6,14 +6,33 @@ const jwt = require('jsonwebtoken');
 const JSONStream = require('JSONStream');
 
 module.exports = {
+
     getAll : (req,res,next) => {
+
+        let perPage = req.query.perPage ;
+        let page = req.query.page;
+
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('withCredentials', true);
         Cars.find({}, {_id : 1, cost: 1, color : 1, model : 1})
+            .skip(+page * +perPage)
+            .limit(+perPage)
             .stream()
             .pipe(JSONStream.stringify())
             .pipe(res);
 
+    } ,
+
+    getAllCount : (req,res,next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('withCredentials', true);
+        Cars.count({})
+            .then((count) => {
+                res.json(count)
+            })
+            .catch((err) => {
+                next(err)
+            })
     } ,
 
     viewTopCars: (req, res, next) => {

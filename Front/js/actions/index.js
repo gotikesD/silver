@@ -12,9 +12,9 @@ function getAll(cars) {
     }
 }
 
-export  function getAllCars() {
+export  function getAllCars(perPage,page) {
     return dispatch => {
-        api.getProducts(
+        api.getProducts(perPage,page,
             cars => {
                 dispatch(getAll(cars))
             })

@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-var Highcharts = require('highcharts'),
-    addFunnel = require('highcharts/modules/funnel');
 
 class AdminContent extends Component {
 
