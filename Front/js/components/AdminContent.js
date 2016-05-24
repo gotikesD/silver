@@ -5,6 +5,10 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+var $ = require('jquery')
+
+var Highcharts = require('highcharts');
+require('highcharts/modules/exporting')(Highcharts);
 
 class AdminContent extends Component {
 
@@ -59,15 +63,36 @@ class AdminContent extends Component {
 
     if (this.props.lastOrders) {
       let count = 0;
-      var lastOrders = this.props.lastOrders.map((i) => {
-
-        return (
-          <div key={count++} style={ { 'height' : `30px` } }>
-            {i}
-          </div>
-        )
+      var days = this.props.lastOrders.map((i) => {
+       return i.split('  ')[0]
       });
-
+      var num = this.props.lastOrders.map((i) => {
+        return Number(i.split('  ')[1])
+      });
+      console.log(num)
+      $(document).ready(function() {
+        var chart1 = new Highcharts.Chart({
+          chart: {
+            renderTo: 'container',
+            type: 'bar'
+          },
+          title: {
+            text: 'Orders Graph'
+          },
+          xAxis: {
+            categories: days
+          },
+          yAxis: {
+            title: {
+              text: 'Quantity'
+            }
+          },
+          series: [{
+            name: 'All users',
+            data: num
+          }]
+        });
+      });
     }
 
     return (
@@ -130,7 +155,7 @@ class AdminContent extends Component {
         <div id="lastWeekOrders"
              style={this.props.actionName === `lastWeekOrders` ? { 'display' : 'block' } : { 'display' : 'none' } }>
           <h3 style={ { 'marginBottom' : '20px' } }>Last week orders</h3>
-          {lastOrders}
+          <div id="container" style={{'minWidth': '300px', 'height' : '400px', 'margin' : '0 auto' } }></div>
         </div>
       </div>
     );
