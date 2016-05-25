@@ -49,7 +49,7 @@ class UserDetailComponent extends Component {
                 </tbody>
             </table>
                 <h3  style={{'marginBottom' : '30px'}}>Own cars. Total - {singleUser.ownCars ? singleUser.ownCars.length : 0}</h3>
-                <button type="button" className="itemButtons"><Link to="/profile/admin">Back</Link></button>
+                <button type="button" className="itemButtons"><Link to="/profile/admin/">Back</Link></button>
             </div>
 
         );

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as pageActions from './actions/index'
 import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/HeaderComponent'
-import SidebarComponent from './components/SidebarComponent'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -14,8 +13,7 @@ class MainContainer extends Component {
       <div className="container">
         <HeaderComponent/>
         <main>
-          <SidebarComponent />
-          <div className="content col-lg-9 col-md-9 col-sm-9 col-xs-11">
+          <div className="content col-lg-12 col-md-12 col-sm-12 col-xs-12">
             {this.props.children}
           </div>
         </main>

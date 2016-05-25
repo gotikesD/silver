@@ -49,7 +49,7 @@ class HomeContent extends Component {
       let perPage = this.refs.perPage.value;
       let page = this.state.currentPage
       this.props.pageActions.getAllCars(perPage, page - 1);
-      this.setState({'currentPage': page == this.state.amountOfButtons ? this.state.amountOfButtons : page + 1});
+      this.setState({'currentPage': page == this.state.amountOfButtons ? this.state.amountOfButtons : Number(page) + 1});
       this.setState({'amountOfButtons': this.state.total / perPage})
     }, 2000)
   }
@@ -61,7 +61,7 @@ class HomeContent extends Component {
 
 
       this.props.pageActions.getAllCars(perPage, page - 1);
-      this.setState({'currentPage': page == 1 ? 1 : page - 1});
+      this.setState({'currentPage': page == 1 ? 1 : Number(page) - 1});
       this.setState({'amountOfButtons': this.state.total / perPage})
     }, 2000)
   }

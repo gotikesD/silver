@@ -100,15 +100,6 @@ class HeaderComponent extends Component {
                         <ul className="nav navbar-nav ">
                             <li className="active"><Link to="/">Main <span className="sr-only">(current)</span></Link></li>
                             <li><Link to="/cars/top" >Top Cars</Link></li>
-                            <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><a href="#">Sport</a></li>
-                                    <li><a href="#">Family</a></li>
-                                    <li><a href="#">Cheap</a></li>
-                                    <li><a href="#">Expensive</a></li>
-                                </ul>
-                            </li>
                         </ul>
                         <div className="userLogged" style={this.props.isAuthorized ? {'display': 'block'} : {'display': 'none'} }>
                             <div className="loggedEmail">You logged as {email}</div>
@@ -118,7 +109,7 @@ class HeaderComponent extends Component {
                             <button type="button"
                                     style= { this.state.isAdmin ? {'display' : 'block'} : {'display' : 'none'}}
                                     className="btn btn-default header-btn pull-right">
-                                <Link to="/profile/admin/">Admin</Link>
+                                    <Link to="/profile/admin/">Admin</Link>
                             </button>
                             <button type="button" className="btn btn-default header-btn pull-right">
                                 <Link to="/profile/">Profile</Link>

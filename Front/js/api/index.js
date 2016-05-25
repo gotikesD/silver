@@ -173,7 +173,7 @@ export default {
 
   viewCart(token, orderId, callbackData) {
 
-    fetch(`http://localhost:3000/cart/view/orderId`, {
+    fetch(`http://localhost:3000/cart/view/${orderId}`, {
       method : `get`,
       mode : `cors`,
       headers : {

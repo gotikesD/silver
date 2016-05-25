@@ -14,10 +14,10 @@ export default (
     <div>
         <Route path="/" component={App} >
             <IndexRoute component={HomeContent} />
-            <Route path='/user/:id' component={UserDetailComponent} />
             <Route path='/profile/' component={UserComponent} />
+            <Route path='/profile/admin/' component={AdminComponent} />
+            <Route path='/user/:id' component={UserDetailComponent} />
             <Route path='/cart/' component={CartComponent} />
-            <Route path='/profile/admin' component={AdminComponent} />
             <Route path='/cars/top' component={TopCarsComponent} />
             <Route path='/cars/:id' component={ItemInfoComponent} />
         </Route>

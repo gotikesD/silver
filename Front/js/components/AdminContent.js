@@ -12,7 +12,6 @@ require('highcharts/modules/exporting')(Highcharts);
 
 class AdminContent extends Component {
 
-
   render() {
 
     if (this.props.allUsers) {
@@ -69,8 +68,10 @@ class AdminContent extends Component {
       var num = this.props.lastOrders.map((i) => {
         return Number(i.split('  ')[1])
       });
-      console.log(num)
-      $(document).ready(function() {
+    }
+
+    $(document).ready(function() {
+      setTimeout(()=> {
         var chart1 = new Highcharts.Chart({
           chart: {
             renderTo: 'container',
@@ -92,8 +93,8 @@ class AdminContent extends Component {
             data: num
           }]
         });
-      });
-    }
+      },0)
+    });
 
     return (
       <div>
