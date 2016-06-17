@@ -9,7 +9,9 @@ class CartComponent extends Component {
   componentWillMount() {
     const token = localStorage.getItem(`token`);
     const orderId = localStorage.getItem(`orderId`);
-    this.props.pageActions.getCart(token, orderId);
+    if(orderId != null) {
+      this.props.pageActions.getCart(token, orderId);
+    }
   }
 
   changeHandle(id, costId, stockId, cost) {
@@ -43,6 +45,8 @@ class CartComponent extends Component {
           $('#confirmSuccess').css({"opacity": "0", "z-index": "100"})
           window.location.replace("http://localhost:8080/");
         }, 4000)
+      } else {
+        alert('Nothing here')
       }
     })
   }

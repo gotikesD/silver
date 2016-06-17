@@ -67,7 +67,6 @@ function mapStateToProps(state) {
     topUsers : state.mainPage.topUsers,
     topAdminCars : state.mainPage.topAdminCars,
     lastOrders : state.mainPage.lastOrders
-
   }
 }
 

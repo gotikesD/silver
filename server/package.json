@@ -18,6 +18,7 @@
     "csv-parser": "^1.9.3",
     "express": "^4.13.4",
     "express-status-error": "0.0.3",
+    "firebase": "^3.0.4",
     "http-status-error": "^1.1.1",
     "joi": "^8.0.5",
     "jsonwebtoken": "^6.2.0",

@@ -20,6 +20,8 @@ class HeaderComponent extends Component {
         if(token) {
             this.props.pageActions.Authorize();
             let user = jwtDecode(token);
+            console.log(user)
+            console.log('Here')
             if(user._doc.rules === 'Admin') {
                 this.setState({isAdmin : true})
             }
@@ -27,20 +29,23 @@ class HeaderComponent extends Component {
     }
 
     signHandle() {
-        api.signUpUser(this.refs.name.value,
-                       this.refs.secondName.value,
-                       this.refs.email.value,
-                       this.refs.password.value,
-                       this.refs.DOB.value, (data) => {
-                if(data) {
+        if(this.refs.name.value == '' || this.refs.secondName.value == '' || this.refs.email.value == '' || this.refs.password.value == '' || this.refs.DOB.value == '' ) {
+            alert('Fill all fields!')
+        } else {
+            api.signUpUser(this.refs.name.value,
+              this.refs.secondName.value,
+              this.refs.email.value,
+              this.refs.password.value,
+              this.refs.DOB.value, (data) => {
+                  if(data) {
 
-                    $('#signSuccess').css({"opacity":"1","z-index" :"100"});
-                    setTimeout(() => {
-                        $('#signSuccess').css({"opacity":"0","z-index" :"-100"})
-                    },2000)
-                }
-            });
-
+                      $('#signSuccess').css({"opacity":"1","z-index" :"100"});
+                      setTimeout(() => {
+                          $('#signSuccess').css({"opacity":"0","z-index" :"-100"})
+                      },2000)
+                  }
+              });
+        }
         this.refs.name.value='';
         this.refs.secondName.value='';
         this.refs.email.value='';
@@ -49,19 +54,23 @@ class HeaderComponent extends Component {
     }
 
     loginHandle() {
-        api.login(this.refs.emailL.value,
-                  this.refs.passwordL.value, (answer) => {
 
-                let user = jwtDecode(answer);
-                if(user._doc.rules === 'Admin') {
-                    this.setState({isAdmin : true})
-                }
+        if(this.refs.emailL.value == '' || this.refs.passwordL.value == '' ) {
+            alert('Fill fields')
+        } else {
+            api.login(this.refs.emailL.value,
+              this.refs.passwordL.value, (answer) => {
 
-                let token = localStorage.setItem("token", answer);
-                this.props.pageActions.Authorize();
-                this.refs.emailL.value='';
-                this.refs.passwordL.value='';
-            })
+                  let user = jwtDecode(answer);
+                  if(user._doc.rules === 'Admin') {
+                      this.setState({isAdmin : true})
+                  }
+                  let token = localStorage.setItem("token", answer);
+                  this.props.pageActions.Authorize();
+                  this.refs.emailL.value='';
+                  this.refs.passwordL.value='';
+              })
+        }
     }
 
     logoutHandle() {
@@ -73,7 +82,11 @@ class HeaderComponent extends Component {
     viewCart() {
         let token = localStorage.getItem('token');
         let orderId = localStorage.getItem('orderId');
-        this.props.pageActions.getCart(token,orderId);
+        if(orderId) {
+            this.props.pageActions.getCart(token,orderId);
+        } else {
+            window.location.replace("http://localhost:8080/cart/");
+        }
     }
 
     render() {

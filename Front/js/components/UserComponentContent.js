@@ -13,16 +13,20 @@ class UserComponentContent extends Component {
         carsProperty.forEach((i)=> {
             newCar[i] = this.refs[i].value;
         });
-        api.addCar(newCar, (data) =>  {
-            if(data) {
-                localStorage.setItem('token', data)
-                $('#addCarSuccess').css({"opacity":"1","z-index" :"100"});
-                setTimeout(() => {
-                    $('#addCarSuccess').css({"opacity":"0","z-index" :"100"})
-                },2000)
-            }
 
-        })
+        if(this.refs.make == '' || this.refs.stockId == '' || this.refs.VINCode == '') {
+            alert('Make, stockId and VinCode required')
+        } else {
+            api.addCar(newCar, (data) =>  {
+                if(data) {
+                    localStorage.setItem('token', data)
+                    $('#addCarSuccess').css({"opacity":"1","z-index" :"100"});
+                    setTimeout(() => {
+                        $('#addCarSuccess').css({"opacity":"0","z-index" :"100"})
+                    },2000)
+                }
+            })
+        }
     }
 
     setCar(id) {
@@ -94,7 +98,7 @@ class UserComponentContent extends Component {
                             <input type="text" className="form-control " placeholder="model" ref="model"/>
                         </div>
                         <div className="form-group form-group">
-                            <input type="text" className="form-control " placeholder="stockId" ref="stockId"/>
+                            <input type="text" className="form-control " placeholder="stockId 17 charasters length!" ref="stockId"/>
                         </div>
                         <div className="form-group form-group">
                             <input type="text" className="form-control " placeholder="VINCode" ref="VINCode"/>

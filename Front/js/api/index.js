@@ -18,8 +18,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          throw new Error(`Server response wasn't OK`);
         }
       })
       .then((responseData) => {
@@ -35,8 +33,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          throw new Error(`Server response wasn't OK`);
         }
       })
       .then((responseData) => {
@@ -52,8 +48,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          throw new Error(`Server response wasn't OK`);
         }
       })
       .then((responseData) => {
@@ -70,8 +64,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          throw new Error(`Server response wasn't OK`);
         }
       })
       .then((responseData) => {
@@ -101,8 +93,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -129,8 +119,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -159,8 +147,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -185,8 +171,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -216,8 +200,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -249,8 +231,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -276,8 +256,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -308,8 +286,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -334,8 +310,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -365,8 +339,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -398,8 +370,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -424,8 +394,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -449,8 +417,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -477,8 +443,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -504,8 +468,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
@@ -530,8 +492,6 @@ export default {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          alert(`Wrong data`)
         }
       })
       .then((responseData) => {
